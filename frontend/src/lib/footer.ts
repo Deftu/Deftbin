@@ -1,3 +1,4 @@
+import * as utils from "$lib/utils";
 import {
     browser
 } from "$app/environment"
@@ -63,21 +64,31 @@ export function performSave(action: string) {
     const content = textarea.value;
     if (!content || content.length === 0) return;
 
+    // @ts-ignore
+    const highlighted = hljs.highlightAuto(content);
+    if (!highlighted) return;
+
+    const language = highlighted.language;
+    if (!language) return;
+
+    const extension = utils.getExtensionFromLanguage(language) || language;
+    if (!extension) return;
+
     // make the api request to save the document
-    fetch("http://127.0.0.1:3000/documents", {
+    fetch("http://127.0.0.1:3001/documents", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            language: "md",
+            language: highlighted.language,
             content: content
         })
     }).then((res) => {
         if (res.status == 201) {
             // navigate to the new page
             res.json().then((json) => {
-                window.location.href = `/${json.key}`;
+                window.location.href = `/${json.key}.${extension}`;
             });
         }
     });

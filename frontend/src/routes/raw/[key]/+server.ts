@@ -7,7 +7,7 @@ import type {
 
 export const GET: RequestHandler = async ({ params }) => {
     const key = params.key;
-    const res = await fetch(`http://localhost:3000/documents/${key}`);
+    const res = await fetch(`http://localhost:3001/documents/${key}`);
     if (res.status != 200) {
         return json({
             status: 404,

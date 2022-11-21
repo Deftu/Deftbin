@@ -47,27 +47,3 @@ body, main {
 	background-color: var(--background);
 	height: 100vh;
 }
-
-.line-nums {
-	--line-num-margin: 20px;
-	min-width: 20px;
-	height: fit-content;
-	max-height: calc(100% - var(--line-num-margin) * 2);
-	font-size: 15px;
-	font-family: monospace;
-	margin: var(--line-num-margin);
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	user-select: none;
-	line-height: 20px;
-	color: var(--text-faded);
-	text-align: center;
-	overflow: hidden
-}
-
-.line-nums > span {
-	position: relative;
-	color: var(--text-faded);
-	text-align: center;
-}

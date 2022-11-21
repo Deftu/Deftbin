@@ -27,7 +27,6 @@
 
 <div class="content">
 	<div class="container">
-		<div class="line-nums" />
         <CodeBlock language={data?.props?.ext?.replace(".", "") || data?.props?.document?.language} code={data.props?.document?.content || ""} />
 	</div>
 </div>

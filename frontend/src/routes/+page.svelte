@@ -1,5 +1,6 @@
 <script>
-  import { onMount } from 'svelte';
+  	import HighlightJS from '$lib/code/HighlightJS.svelte';
+	import { onMount } from 'svelte';
 
 
     /** @type {import('./$types').PageData} */
@@ -37,9 +38,11 @@
 	<meta name="description" content="Deftbin is a free, open-source pastebin alternative used to share code.">
 </svelte:head>
 
+<HighlightJS />
+
 <div class="content">
 	<div class="container">
-		<div class="line-nums">></div>
+		<div class="caret-container">></div>
 		<textarea spellcheck="false">{content}</textarea>
 	</div>
 </div>
@@ -58,6 +61,24 @@
 		display: flex;
 		flex-direction: row;
 		flex: 1;
+	}
+
+	.caret-container {
+		--line-num-margin: 20px;
+		min-width: 20px;
+		height: fit-content;
+		max-height: calc(100% - var(--line-num-margin) * 2);
+		font-size: 15px;
+		font-family: monospace;
+		margin: var(--line-num-margin);
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		user-select: none;
+		line-height: 20px;
+		color: var(--text-faded);
+		text-align: center;
+		overflow: hidden
 	}
 
 	textarea {
