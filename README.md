@@ -13,13 +13,16 @@ A simple, open-source code sharing web application made as a more complex altern
   - [Installation](#installation)
     - [Basic](#basic)
     - [Docker](#docker)
+  - [License](#license)
 
 ## Features
 
 - [x] Syntax highlighting
 - [x] Upload API
 - [x] Compatible with Hastebin API
-- [x] Customizable
+- [x] Themes
+- [ ] Customizable
+- [ ] Language indicators
 
 ## Installation
 
@@ -39,3 +42,9 @@ Note:
 
 ### Docker
 TODO
+
+## License
+
+Deftbin is licensed under the [LGPL 3.0][lgpl] license.
+
+[lgpl]: https://www.gnu.org/licenses/lgpl-3.0.en.html
