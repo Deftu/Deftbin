@@ -41,7 +41,11 @@ Note:
 6. You're done!
 
 ### Docker
-TODO
+
+1. Clone the repository
+2. Adapt the example `docker-compose.yml` file to your needs.
+3. Run `docker-compose up -d` to start the containers.
+4. You're done!
 
 ## License
 
