@@ -33,13 +33,61 @@
         }
     }
 
+    function getLineHeight(element: HTMLElement) {
+        const copy = element.cloneNode() as HTMLElement;
+        copy.style.visibility = 'hidden';
+        copy.style.position = 'absolute';
+        copy.textContent = 'a';
+        element.parentNode?.append(copy);
+        const lineHeight = copy.offsetHeight;
+        element.parentNode?.removeChild(copy);
+        return lineHeight;
+    }
+
     onMount(() => {
         // TODO: Add and position line numbers
         const lineNums = document.querySelector(".line-nums");
+        const pre = document.querySelector("pre");
+        const code = document.querySelector("code");
+        if (lineNums && pre && code) {
+            const lines = code.innerText.split("\n");
+
+            for (let i = 0; i < lines.length; i++) {
+                console.log("----- ", i, "-----")
+                const content = lines[i - 1];
+                const line = document.createElement("span");
+                line.style.visibility = "hidden";
+                line.style.position = "absolute";
+                line.style.width = "100%";
+                line.style.height = "fit-content";
+                line.textContent = content;
+                console.log("line", line.textContent);
+                code.append(line);
+                const lineHeight = line.offsetHeight;
+
+                const lineNum = document.createElement("span");
+                lineNum.textContent = (i + 1).toString();
+
+                if (i >= 1 && content?.length > 0) {
+                    const singleLineHeight = getLineHeight(line);
+
+                    // get the number of lines this line takes up
+                    console.log("raw numLines", lineHeight / singleLineHeight)
+                    const numLines = Math.round(lineHeight / singleLineHeight);
+                    console.log("numLines", numLines);
+
+                    lineNum.style.marginTop = `${(singleLineHeight * (numLines - 1))}px`;
+                } else if (content?.length === 0) {
+                    lineNum.style.marginTop = "22px";
+                }
+
+                line.remove();
+                lineNums.append(lineNum);
+            }
+        }
 
         // Fix the scroll position
         // @ts-ignore
-        lineNums.style.scrollBehavior = "normal";
         document.querySelector("pre")?.addEventListener("scroll", (e) => {
             // @ts-ignore
             lineNums.scrollTop = (e.target as HTMLElement).scrollTop;
@@ -69,18 +117,17 @@
         margin: var(--line-num-margin);
         display: flex;
         flex-direction: column;
-        justify-content: center;
         user-select: none;
         line-height: 22px;
         color: var(--text-faded);
         text-align: center;
-	    overflow: hidden
+        overflow: hidden;
     }
 
-    .line-nums > :global(span) {
-	    position: relative;
-	    color: var(--text-faded);
-	    text-align: center;
+    .line-nums :global(span) {
+        position: relative;
+        color: var(--text-faded);
+        text-align: center;
     }
 
     pre {
