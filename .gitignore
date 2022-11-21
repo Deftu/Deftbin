@@ -1,0 +1,7 @@
+npm-debug.log
+node_modules
+*.swp
+*.swo
+data
+*.DS_Store
+docker-compose.override.yml
