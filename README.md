@@ -1,13 +1,13 @@
 <div align="center">
 
-# [`Deftbin`]
+# Deftbin
 A simple, open-source code sharing web application made as a more complex alternative to [Pastebin](https://pastebin.com/) and [Hastebin](https://hastebin.com/).
 
 </div>
 
 ## Table of Contents
 
-- [\[`Deftbin`\]](#deftbin)
+- [Deftbin](#deftbin)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Installation](#installation)
