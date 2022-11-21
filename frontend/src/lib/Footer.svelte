@@ -2,10 +2,10 @@
     import {
         performCopyLink,
         performCopy,
-        performNew,
-        performSave,
         performDuplicate,
         performRaw,
+        performSave,
+        performNew
     } from "./footer";
 </script>
 
@@ -16,10 +16,10 @@
     <div class="actions">
         <button data-action="copy-link" on:click={() => performCopyLink("copy-link")}>Copy Link</button>
         <button data-action="copy" on:click={() => performCopy("copy")}>Copy</button>
-        <button data-action="new" on:click={() => performNew("new")} class="enabled">New</button>
-        <button data-action="save" on:click={() => performSave("save")} class="enabled">Save</button>
         <button data-action="duplicate" on:click={() => performDuplicate("duplicate")}>Duplicate</button>
         <button data-action="raw" on:click={() => performRaw("raw")}>Raw</button>
+        <button data-action="save" on:click={() => performSave("save")} class="enabled">Save</button>
+        <button data-action="new" on:click={() => performNew("new")} class="enabled">New</button>
     </div>
 </footer>
 
