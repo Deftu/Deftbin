@@ -29,7 +29,7 @@ A simple, open-source code sharing web application made as a more complex altern
 Note:
 - The `main` branch is the latest stable release.
 - The `dev` branch is the latest development version.
-- You need Python 3.6 or higher and Node.js 12 or higher to run Deftbin.
+- You need Node.js 12 or higher to run Deftbin.
 
 ### Basic
 
