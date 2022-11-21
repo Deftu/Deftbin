@@ -77,8 +77,6 @@
                     console.log("numLines", numLines);
 
                     lineNum.style.marginTop = `${(singleLineHeight * (numLines - 1))}px`;
-                } else if (content?.length === 0) {
-                    lineNum.style.marginTop = "22px";
                 }
 
                 line.remove();
