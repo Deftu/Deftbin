@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css?family=Outfit");
+@import url("https://fonts.googleapis.com/css?family=Manrope");
+
+html {
+	--footer-spacing: 20px;
+	--footer-height: 80px;
+
+	/* colours */
+	--background: #28282B;
+	--background-2: #131316;
+	--background-3: #1D1D20;
+	--text: #FDFBF9;
+	--text-faded: #FDFBF980;
+}
+
+@media (prefers-color-scheme: light) {
+	html {
+		--background: #FDFBF9;
+		--background-2: #D2CDC6;
+		--background-3: #F5EBE0;
+		--text: #28282B;
+		--text-faded: #28282B80;
+	}
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	scroll-behavior: smooth;
+	scrollbar-width: none;
+	font-family: "Manrope", sans-serif;
+	color: var(--text);
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: "Outfit", sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+body, main {
+	background-color: var(--background);
+	height: 100vh;
+}
+
+.line-nums {
+	--line-num-margin: 20px;
+	min-width: 20px;
+	height: fit-content;
+	max-height: calc(100% - var(--line-num-margin) * 2);
+	font-size: 15px;
+	font-family: monospace;
+	margin: var(--line-num-margin);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	user-select: none;
+	line-height: 20px;
+	color: var(--text-faded);
+	text-align: center;
+	overflow: hidden
+}
+
+.line-nums > span {
+	position: relative;
+	color: var(--text-faded);
+	text-align: center;
+}
