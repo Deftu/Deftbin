@@ -1,10 +1,9 @@
 <script>
-	import Footer from '$lib/Footer.svelte';
   	import HighlightJS from '$lib/code/HighlightJS.svelte';
+	import ActionBar from '$lib/action/ActionBar.svelte';
 	import {
 		onMount
 	} from 'svelte';
-
 
     /** @type {import('./$types').PageData} */
     export let data;
@@ -38,10 +37,11 @@
 	<meta name="robots" content="noindex,nofollow">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="title" content="Deftbin">
-	<meta name="description" content="Deftbin is a free, open-source pastebin alternative used to share code.">
+	<meta name="description" content="Deftbin is a free, open-source code sharing application.">
 </svelte:head>
 
 <HighlightJS />
+<ActionBar />
 
 <div class="content">
 	<div class="container">
@@ -49,7 +49,6 @@
 		<textarea spellcheck="false">{content}</textarea>
 	</div>
 </div>
-<Footer />
 
 <style>
 	.content {

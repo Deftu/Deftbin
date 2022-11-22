@@ -1,13 +1,14 @@
 <script>
-	import Footer from '$lib/Footer.svelte';
+	import HighlightJS from '$lib/code/HighlightJS.svelte';
+	import ActionBar from '$lib/action/ActionBar.svelte';
     import CodeBlock from '$lib/code/CodeBlock.svelte';
 
     import {
-		initialize as initializeFooter
-	} from "$lib/footer";
+		initializeActionBar
+	} from "$lib/action/actions";
   import { onMount } from "svelte";
     onMount(() => {
-        initializeFooter("copy-link", "copy", "new", "save", "duplicate", "raw");
+        initializeActionBar("copy-link", "copy", "new", "save", "duplicate", "raw");
     });
 
     /** @type {import('./$types').PageData} */
@@ -26,12 +27,14 @@
 	<meta name="description" content="Deftbin is a free, open-source pastebin alternative used to share code.">
 </svelte:head>
 
+<HighlightJS />
+<ActionBar />
+
 <div class="content">
 	<div class="container">
         <CodeBlock language={data?.props?.ext?.replace(".", "") || data?.props?.document?.language} code={data.props?.document?.content || ""} />
 	</div>
 </div>
-<Footer />
 
 <style>
 	.content {

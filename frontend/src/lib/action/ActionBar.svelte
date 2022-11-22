@@ -1,4 +1,5 @@
 <script>
+    import SettingsButton from "$lib/action/settings/SettingsButton.svelte";
     import {
         performCopyLink,
         performCopy,
@@ -6,14 +7,15 @@
         performRaw,
         performSave,
         performNew
-    } from "./footer";
+    } from "$lib/action/actions";
 </script>
 
-<footer>
-    <div class="branding">
+<div class="action-bar">
+    <div class="left">
         <h1 class="brand-name">Deftbin</h1>
+        <SettingsButton />
     </div>
-    <div class="actions">
+    <div class="right">
         <button data-action="copy-link" on:click={() => performCopyLink("copy-link")}>Copy Link</button>
         <button data-action="copy" on:click={() => performCopy("copy")}>Copy</button>
         <button data-action="duplicate" on:click={() => performDuplicate("duplicate")}>Duplicate</button>
@@ -21,10 +23,10 @@
         <button data-action="save" on:click={() => performSave("save")} class="enabled">Save</button>
         <button data-action="new" on:click={() => performNew("new")} class="enabled">New</button>
     </div>
-</footer>
+</div>
 
 <style>
-    footer {
+    .action-bar {
         position: fixed;
         bottom: 0;
         left: 0;
@@ -44,7 +46,7 @@
         background-color: var(--background-2);
     }
 
-    .branding {
+    .left {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -53,11 +55,12 @@
     .brand-name {
         margin: 0;
         margin-left: 10px;
+        margin-right: 20px;
         font-size: 25px;
         font-weight: 700;
     }
 
-    .actions {
+    .right {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -69,17 +72,17 @@
             --footer-height: 100px;
         }
 
-        footer {
+        .action-bar {
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
 
-        .branding {
-            margin-bottom: 10px;
+        .left {
+            margin-bottom: 20px;
         }
 
-        .actions {
+        .right {
             flex-direction: row;
             justify-content: center;
             align-items: center;
@@ -91,7 +94,7 @@
             --footer-height: 150px;
         }
 
-        .actions button {
+        .right button {
             margin-top: 10px;
         }
     }
@@ -102,7 +105,8 @@
         }
     }
 
-    .actions button {
+    .right button {
+        visibility: hidden;
         min-width: 80px;
         margin-left: 10px;
         padding: 5px 15px 5px 15px;
@@ -114,11 +118,12 @@
         border: none;
     }
 
-    .actions button.enabled {
+    .right button.enabled {
+        visibility: visible;
         background-color: var(--background);
     }
 
-    .actions button.enabled:hover {
+    .right button.enabled:hover {
         background-color: var(--background-3);
         cursor: pointer;
     }

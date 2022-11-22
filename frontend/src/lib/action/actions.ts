@@ -3,7 +3,7 @@ import {
     browser
 } from "$app/environment"
 
-export function initialize(
+export function initializeActionBar(
     ...actions: string[]
 ) {
     if (!browser) return;

@@ -23,7 +23,9 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@fortawesome/free-solid-svg-icons": "^6.2.1",
 		"@sveltejs/adapter-node": "^1.0.0-next.100",
-		"dotenv-cli": "^6.0.0"
+		"dotenv-cli": "^6.0.0",
+		"svelte-fa": "^3.0.3"
 	}
 }
