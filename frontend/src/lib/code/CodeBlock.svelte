@@ -2,7 +2,7 @@
     import "./hljs.css";
     import { onMount } from "svelte";
     import * as utils from "$lib/utils";
-    import HighlightJs from "./HighlightJS.svelte";
+    import HighlightJS from "./HighlightJS.svelte";
 
     export let language: string;
     export let code: string;
@@ -91,7 +91,7 @@
     });
 </script>
 
-<HighlightJs hljsLoadedCallback={loadLanguage} />
+<HighlightJS hljsLoadedCallback={loadLanguage} />
 
 <div class="line-nums"></div>
 <pre>

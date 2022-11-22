@@ -1,6 +1,9 @@
 <script>
+	import Footer from '$lib/Footer.svelte';
   	import HighlightJS from '$lib/code/HighlightJS.svelte';
-	import { onMount } from 'svelte';
+	import {
+		onMount
+	} from 'svelte';
 
 
     /** @type {import('./$types').PageData} */
@@ -46,6 +49,7 @@
 		<textarea spellcheck="false">{content}</textarea>
 	</div>
 </div>
+<Footer />
 
 <style>
 	.content {

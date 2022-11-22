@@ -1,4 +1,5 @@
 <script>
+	import Footer from '$lib/Footer.svelte';
     import CodeBlock from '$lib/code/CodeBlock.svelte';
 
     import {
@@ -30,6 +31,7 @@
         <CodeBlock language={data?.props?.ext?.replace(".", "") || data?.props?.document?.language} code={data.props?.document?.content || ""} />
 	</div>
 </div>
+<Footer />
 
 <style>
 	.content {
