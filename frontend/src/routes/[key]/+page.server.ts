@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({
     var res;
 
     try {
-        res = await fetch(`http://localhost:3001/documents/${key}`)
+        res = await fetch(`http://localhost:3001/documents/${key}`);
     } catch (err) {
         throw error(500, {
             message: "Could not connect to the server (" + err + ")"

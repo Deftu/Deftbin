@@ -13,21 +13,17 @@
     function loadLanguage() {
         // load language
         if (language) {
-            console.log("loading language", language);
             let script = document.createElement("script");
             // @ts-ignore
             script.src = `//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/${languageAlias}.min.js`;
-            console.log("script.src", script.src);
             script.async = true;
             document.head.append(script);
 
             script.addEventListener("load", () => {
-                console.log("loaded language, highlighting that (" + language + ")");
                 // @ts-ignore
                 hljs.highlightElement(document.querySelector("code"));
             });
         } else {
-            console.log("no language - highlighting all");
             // @ts-ignore
             hljs.highlightAll();
         }
@@ -50,33 +46,35 @@
         const pre = document.querySelector("pre");
         const code = document.querySelector("code");
         if (lineNums && pre && code) {
-            const lines = code.innerText.split("\n");
+            const lines = code?.textContent?.split("\n");
+            if (!lines) return;
 
             for (let i = 0; i < lines.length; i++) {
                 console.log("----- ", i, "-----")
-                const content = lines[i - 1];
+                const content = lines[i - 1] || "";
+
+                console.log("line", content);
                 const line = document.createElement("span");
                 line.style.visibility = "hidden";
-                line.style.position = "absolute";
                 line.style.width = "100%";
-                line.style.height = "fit-content";
-                line.textContent = content;
-                console.log("line", line.textContent);
+                line.textContent = content + "\n";
                 code.append(line);
                 const lineHeight = line.offsetHeight;
+                console.log("lineHeight", lineHeight);
+                const singleLineHeight = getLineHeight(line);
 
                 const lineNum = document.createElement("span");
                 lineNum.textContent = (i + 1).toString();
 
-                if (i >= 1 && content?.length > 0) {
-                    const singleLineHeight = getLineHeight(line);
-
+                if (i >= 1 && content.length > 0) {
                     // get the number of lines this line takes up
                     console.log("raw numLines", lineHeight / singleLineHeight)
-                    const numLines = Math.round(lineHeight / singleLineHeight);
+                    const numLines = Math.floor(lineHeight / singleLineHeight);
                     console.log("numLines", numLines);
 
                     lineNum.style.marginTop = `${(singleLineHeight * (numLines - 1))}px`;
+                } else {
+                    lineNum.style.marginTop = "0px";
                 }
 
                 line.remove();
@@ -105,6 +103,10 @@
 </pre>
 
 <style>
+    :global(html) {
+        --code-line-height: 1.5;
+    }
+
     .line-nums {
         --line-num-margin: 20px;
         min-width: 20px;
@@ -116,7 +118,7 @@
         display: flex;
         flex-direction: column;
         user-select: none;
-        line-height: 22px;
+        line-height: var(--code-line-height);
         color: var(--text-faded);
         text-align: center;
         overflow: hidden;
@@ -130,7 +132,6 @@
 
     pre {
         --pre-margin: 20px;
-        --code-line-height: 22px;
 
 		width: calc(100% - var(--pre-margin) * 2);
 		height: calc(100% - var(--pre-margin) * 2);
@@ -165,6 +166,6 @@
         white-space: normal;
         word-wrap: break-word;
 
-        white-space: pre-wrap;
+        white-space: pre-line;
     }
 </style>
