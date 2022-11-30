@@ -15,9 +15,7 @@ export const POST: RequestHandler = async ({
         headers: {
             "Content-Type": "application/json"
         },
-        body: {
-            content: body
-        }
+        body: body
     });
 
     if (res.status != 201) {
