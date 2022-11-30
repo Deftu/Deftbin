@@ -63,13 +63,6 @@
         z-index: 1000;
     }
 
-    .loading-text {
-        font-size: 36px;
-        font-weight: 700;
-        margin: 0;
-        color: var(--text);
-    }
-
     .loading-spinner {
         width: 200px;
         height: 200px;
