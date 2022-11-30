@@ -39,7 +39,7 @@ const handler = new DocumentHandler(
 
 // setup the middleware
 app.use(cors());
-app.use(express.text());
+app.use(express.raw());
 app.use(express.json());
 
 app.get("/documents/:key", async (req, res) => {
@@ -59,9 +59,7 @@ app.get("/documents/:key", async (req, res) => {
 });
 
 app.post("/new", async (req, res) => {
-    console.log("request", req);
     const document = req.body;
-    console.log("Creating document", document);
 
     if (!document.content) {
         res.status(400).json({

@@ -36,7 +36,6 @@
     function save() {
         const actionBarPos = document.querySelector("#action-bar-pos") as HTMLInputElement;
         if (actionBarPos) {
-            console.log("Saving action bar position: " + actionBarPos.value);
             settings.setActionbarPosition(settings.getActionBarPosFromValue(actionBarPos.value));
         }
 
