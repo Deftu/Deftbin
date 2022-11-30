@@ -30,7 +30,7 @@ export const POST: RequestHandler = async ({
 
     const document = await res.json();
     return json({
-        status: 201,
+        status: 200,
         body: document
     });
 }
