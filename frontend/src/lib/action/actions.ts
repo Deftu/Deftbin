@@ -144,7 +144,6 @@ export function performDuplicate(action: string) {
 
     const content = code.textContent;
     if (!content || content.length === 0) return;
-    console.log(content);
 
     // redirect to the base route with the content as a body parameter
     window.location.href = `/?content=${encodeURIComponent(content)}`;
