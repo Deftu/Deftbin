@@ -1,8 +1,5 @@
 <script lang="ts">
     import * as settings from "$lib/settings/settings";
-    // load the css file for the action bar position
-    import(`./actionbar-${settings.getSettings().actionbarPosition}.css`);
-
     import SettingsButton from "$lib/action/settings/SettingsButton.svelte";
     import {
         onMount
@@ -21,6 +18,7 @@
         const container = document.querySelector(".action-bar");
 		if (!container) return;
 		settings.setupFancyLights(container as HTMLElement);
+        settings.setupActionBarPos(container as HTMLElement);
 
         shortcuts.initialize();
     });
@@ -145,6 +143,16 @@
         margin: var(--action-bar-spacing);
         border-radius: 25px;
         background-color: var(--background-2);
+    }
+
+    :global(.action-bar[action-bar-pos="top"]) {
+        top: 0;
+        left: 0;
+    }
+
+    :global(.action-bar[action-bar-pos="bottom"]) {
+        bottom: 0;
+        left: 0;
     }
 
     .left {

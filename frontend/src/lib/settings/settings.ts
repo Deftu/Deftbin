@@ -191,3 +191,8 @@ export function setupFancyLights(target: HTMLElement) {
         target.classList.remove("fancy-lights");
     }
 }
+
+export function setupActionBarPos(target: HTMLElement) {
+    const actionBarPos = getSettings().actionbarPosition;
+    target.setAttribute("action-bar-pos", actionBarPos);
+}

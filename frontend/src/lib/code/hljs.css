@@ -1,0 +1,349 @@
+.hljs-comment,
+.hljs-quote {
+  color: #586e75;
+}
+
+/* Solarized Green */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-addition {
+  color: #859900;
+}
+
+/* Solarized Cyan */
+.hljs-number,
+.hljs-string,
+.hljs-meta .hljs-meta-string,
+.hljs-literal,
+.hljs-doctag,
+.hljs-regexp {
+  color: #2aa198;
+}
+
+/* Solarized Blue */
+.hljs-title,
+.hljs-section,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: #268bd2;
+}
+
+/* Solarized Yellow */
+.hljs-attribute,
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-class .hljs-title,
+.hljs-type {
+  color: #b58900;
+}
+
+/* Solarized Orange */
+.hljs-symbol,
+.hljs-bullet,
+.hljs-subst,
+.hljs-meta,
+.hljs-meta .hljs-keyword,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-link {
+  color: #cb4b16;
+}
+
+/* Solarized Red */
+.hljs-built_in,
+.hljs-deletion {
+  color: #dc322f;
+}
+
+.hljs-formula {
+  background: #72d3eb;
+}
+
+html {
+    --hljs-comment-color: #586E75;
+    --hljs-quote-color: #586E75;
+    --hljs-keyword-color: #859900;
+    --hljs-selector-tag-color: #859900;
+    --hljs-addition-color: #859900;
+    --hljs-number-color: #2AA198;
+    --hljs-string-color: #2AA198;
+    --hljs-meta-color: #2AA198;
+    --hljs-literal-color: #2AA198;
+    --hljs-doctag-color: #2AA198;
+    --hljs-regexp-color: #2AA198;
+    --hljs-title-color: #268BD2;
+    --hljs-section-color: #268BD2;
+    --hljs-name-color: #268BD2;
+    --hljs-selector-id-color: #268BD2;
+    --hljs-selector-class-color: #268BD2;
+    --hljs-attribute-color: #B58900;
+    --hljs-attr-color: #B58900;
+    --hljs-variable-color: #B58900;
+    --hljs-template-variable-color: #B58900;
+    --hljs-class-color: #B58900;
+    --hljs-title-color: #B58900;
+    --hljs-type-color: #B58900;
+    --hljs-symbol-color: #CB4B16;
+    --hljs-bullet-color: #CB4B16;
+    --hljs-subst-color: #CB4B16;
+    --hljs-meta-color: #CB4B16;
+    --hljs-meta-keyword-color: #CB4B16;
+    --hljs-selector-attr-color: #CB4B16;
+    --hljs-selector-pseudo-color: #CB4B16;
+    --hljs-link-color: #CB4B16;
+    --hljs-built_in-color: #DC322F;
+    --hljs-deletion-color: #DC322F;
+    --hljs-formula-color: #72D3EB;
+}
+
+html[data-theme="onedarkpro"] {
+    --hljs-comment-color: #5C6370;
+    --hljs-quote-color: #5C6370;
+    --hljs-keyword-color: #E06C75;
+    --hljs-selector-tag-color: #E06C75;
+    --hljs-addition-color: #E06C75;
+    --hljs-number-color: #D19A66;
+    --hljs-string-color: #D19A66;
+    --hljs-meta-color: #D19A66;
+    --hljs-literal-color: #D19A66;
+    --hljs-doctag-color: #D19A66;
+    --hljs-regexp-color: #D19A66;
+    --hljs-title-color: #98C379;
+    --hljs-section-color: #98C379;
+    --hljs-name-color: #98C379;
+    --hljs-selector-id-color: #98C379;
+    --hljs-selector-class-color: #98C379;
+    --hljs-attribute-color: #61AFEF;
+    --hljs-attr-color: #61AFEF;
+    --hljs-variable-color: #61AFEF;
+    --hljs-template-variable-color: #61AFEF;
+    --hljs-class-color: #61AFEF;
+    --hljs-title-color: #61AFEF;
+    --hljs-type-color: #61AFEF;
+    --hljs-symbol-color: #C678DD;
+    --hljs-bullet-color: #C678DD;
+    --hljs-subst-color: #C678DD;
+    --hljs-meta-color: #C678DD;
+    --hljs-meta-keyword-color: #C678DD;
+    --hljs-selector-attr-color: #C678DD;
+}
+
+html[data-theme="synthwave84"] {
+    --hljs-comment-color: #5F87AF;
+    --hljs-quote-color: #5F87AF;
+    --hljs-keyword-color: #FF9DA4;
+    --hljs-selector-tag-color: #FF9DA4;
+    --hljs-addition-color: #FF9DA4;
+    --hljs-number-color: #FFD580;
+    --hljs-string-color: #FFD580;
+    --hljs-meta-color: #FFD580;
+    --hljs-literal-color: #FFD580;
+    --hljs-doctag-color: #FFD580;
+    --hljs-regexp-color: #FFD580;
+    --hljs-title-color: #FFB454;
+    --hljs-section-color: #FFB454;
+    --hljs-name-color: #FFB454;
+    --hljs-selector-id-color: #FFB454;
+    --hljs-selector-class-color: #FFB454;
+    --hljs-attribute-color: #FFB454;
+    --hljs-attr-color: #FFB454;
+    --hljs-variable-color: #FFB454;
+    --hljs-template-variable-color: #FFB454;
+    --hljs-class-color: #FFB454;
+    --hljs-title-color: #FFB454;
+    --hljs-type-color: #FFB454;
+    --hljs-symbol-color: #FFB454;
+    --hljs-bullet-color: #FFB454;
+    --hljs-subst-color: #FFB454;
+    --hljs-meta-color: #FFB454;
+    --hljs-meta-keyword-color: #FFB454;
+    --hljs-selector-attr-color: #FFB454;
+    --hljs-selector-pseudo-color: #FFB454;
+    --hljs-link-color: #FFB454;
+    --hljs-built_in-color: #FFB454;
+    --hljs-deletion-color: #FFB454;
+    --hljs-formula-color: #FFB454;
+}
+
+html[data-theme="monokai"] {
+    --hljs-comment-color: #75715E;
+    --hljs-quote-color: #75715E;
+    --hljs-keyword-color: #F92672;
+    --hljs-selector-tag-color: #F92672;
+    --hljs-addition-color: #F92672;
+    --hljs-number-color: #AE81FF;
+    --hljs-string-color: #AE81FF;
+    --hljs-meta-color: #AE81FF;
+    --hljs-literal-color: #AE81FF;
+    --hljs-doctag-color: #AE81FF;
+    --hljs-regexp-color: #AE81FF;
+    --hljs-title-color: #A6E22E;
+    --hljs-section-color: #A6E22E;
+    --hljs-name-color: #A6E22E;
+    --hljs-selector-id-color: #A6E22E;
+    --hljs-selector-class-color: #A6E22E;
+    --hljs-attribute-color: #A6E22E;
+    --hljs-attr-color: #A6E22E;
+    --hljs-variable-color: #A6E22E;
+    --hljs-template-variable-color: #A6E22E;
+    --hljs-class-color: #A6E22E;
+    --hljs-title-color: #A6E22E;
+    --hljs-type-color: #A6E22E;
+    --hljs-symbol-color: #A6E22E;
+    --hljs-bullet-color: #A6E22E;
+    --hljs-subst-color: #A6E22E;
+    --hljs-meta-color: #A6E22E;
+    --hljs-meta-keyword-color: #A6E22E;
+    --hljs-selector-attr-color: #A6E22E;
+    --hljs-selector-pseudo-color: #A6E22E;
+    --hljs-link-color: #A6E22E;
+    --hljs-built_in-color: #A6E22E;
+    --hljs-deletion-color: #A6E22E;
+    --hljs-formula-color: #A6E22E;
+}
+
+.hljs {
+    background-color: var(--background-2);
+}
+
+.hljs-comment {
+    color: var(--hljs-comment-color);
+}
+
+.hljs-quote {
+    color: var(--hljs-quote-color);
+}
+
+.hljs-keyword {
+    color: var(--hljs-keyword-color);
+}
+
+.hljs-selector-tag {
+    color: var(--hljs-selector-tag-color);
+}
+
+.hljs-addition {
+    color: var(--hljs-addition-color);
+}
+
+.hljs-number {
+    color: var(--hljs-number-color);
+}
+
+.hljs-string {
+    color: var(--hljs-string-color);
+}
+
+.hljs-meta .hljs-meta-string {
+    color: var(--hljs-meta-color);
+}
+
+.hljs-literal {
+    color: var(--hljs-literal-color);
+}
+
+.hljs-doctag {
+    color: var(--hljs-doctag-color);
+}
+
+.hljs-regexp {
+    color: var(--hljs-regexp-color);
+}
+
+.hljs-title {
+    color: var(--hljs-title-color);
+}
+
+.hljs-section {
+    color: var(--hljs-section-color);
+}
+
+.hljs-name {
+    color: var(--hljs-name-color);
+}
+
+.hljs-selector-id {
+    color: var(--hljs-selector-id-color);
+}
+
+.hljs-selector-class {
+    color: var(--hljs-selector-class-color);
+}
+
+.hljs-attribute {
+    color: var(--hljs-attribute-color);
+}
+
+.hljs-attr {
+    color: var(--hljs-attr-color);
+}
+
+.hljs-variable {
+    color: var(--hljs-variable-color);
+}
+
+.hljs-template-variable {
+    color: var(--hljs-template-variable-color);
+}
+
+.hljs-class .hljs-title {
+    color: var(--hljs-class-color);
+}
+
+.hljs-type {
+    color: var(--hljs-type-color);
+}
+
+.hljs-symbol {
+    color: var(--hljs-symbol-color);
+}
+
+.hljs-bullet {
+    color: var(--hljs-bullet-color);
+}
+
+.hljs-subst {
+    color: var(--hljs-subst-color);
+}
+
+.hljs-meta {
+    color: var(--hljs-meta-color);
+}
+
+.hljs-meta .hljs-keyword {
+    color: var(--hljs-meta-keyword-color);
+}
+
+.hljs-selector-attr {
+    color: var(--hljs-selector-attr-color);
+}
+
+.hljs-selector-pseudo {
+    color: var(--hljs-selector-pseudo-color);
+}
+
+.hljs-link {
+    color: var(--hljs-link-color);
+}
+
+.hljs-built_in {
+    color: var(--hljs-built_in-color);
+}
+
+.hljs-deletion {
+    color: var(--hljs-deletion-color);
+}
+
+.hljs-formula {
+    background: var(--hljs-formula-color);
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}

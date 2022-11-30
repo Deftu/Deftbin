@@ -1,9 +1,6 @@
 <script lang="ts">
+    import "./hljs.css";
     import * as settings from "$lib/settings/settings";
-    const theme = settings.getSettings().theme;
-    if (theme != "dark" && theme != "light") {
-        import(`./themes/hljs-${theme}.css`);
-    } else import(/* @vite-ignore */ `./hljs-default.css`);
 
     import { onMount } from "svelte";
     import * as utils from "$lib/utils";

@@ -2,10 +2,20 @@
     import {
         page
     } from '$app/stores';
+    import {
+        onMount
+    } from 'svelte';
+    import {
+        loading
+    } from '$lib/loading';
 
     const status = $page.status;
     const message = $page.error?.message || null;
     const errMsg = $page.error?.errMsg || null;
+
+    onMount(() => {
+        loading.set(false);
+    });
 </script>
 
 <div class="container">
@@ -15,7 +25,7 @@
             <h2 class="error-message">{message}</h2>
         {/if}
         <!-- Hides/shows the actual error's content -->
-        <button class="error-toggle" on:click={() => document.querySelector(".error-content").classList.toggle("hidden")}>
+        <button class="error-toggle" on:click={() => document.querySelector(".error-content")?.classList?.toggle("hidden")}>
             <span class="error-toggle-text">Show error</span>
             <span class="error-toggle-icon">▼</span>
         </button>
