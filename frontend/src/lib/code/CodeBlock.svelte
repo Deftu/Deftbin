@@ -1,214 +1,225 @@
 <script lang="ts">
-  import * as settings from "$lib/settings/settings";
-  const theme = settings.getSettings().theme;
-  if (theme != "dark" && theme != "light") {
-    import(`./themes/hljs-${theme}.css`);
-  } else import(/* @vite-ignore */ `./hljs-default.css`);
+    import * as settings from "$lib/settings/settings";
+    const theme = settings.getSettings().theme;
+    if (theme != "dark" && theme != "light") {
+        import(`./themes/hljs-${theme}.css`);
+    } else import(/* @vite-ignore */ `./hljs-default.css`);
 
-  import { onMount } from "svelte";
-  import * as utils from "$lib/utils";
-  import HighlightJS from "./HighlightJS.svelte";
+    import { onMount } from "svelte";
+    import * as utils from "$lib/utils";
+    import HighlightJS from "./HighlightJS.svelte";
 
-  export let language: string;
-  export let code: string;
+    export let language: string;
+    export let code: string;
 
-  // @ts-ignore
-  const languageAlias = utils.getLanguageFromExtension(language) || language;
+    // @ts-ignore
+    const languageAlias = utils.getLanguageFromExtension(language) || language;
 
-  function loadLanguage() {
-    // load language
-    if (language) {
-      let script = document.createElement("script");
-      // @ts-ignore
-      script.src = `//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/${languageAlias}.min.js`;
-      script.async = true;
-      document.head.append(script);
+    function loadLanguage() {
+        // load language
+        if (language) {
+            let script = document.createElement("script");
+            // @ts-ignore
+            script.src = `//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/${languageAlias}.min.js`;
+            script.async = true;
+            document.head.append(script);
 
-      script.addEventListener("load", () => {
-        // @ts-ignore
-        hljs.highlightElement(document.querySelector("code"));
-      });
-    } else {
-      // @ts-ignore
-      hljs.highlightAll();
-    }
-  }
-
-  function getLineHeight(element: HTMLElement) {
-    const copy = element.cloneNode() as HTMLElement;
-    copy.style.visibility = "hidden";
-    copy.style.position = "absolute";
-    copy.textContent = "a";
-    element.parentNode?.append(copy);
-    const lineHeight = copy.offsetHeight;
-    element.parentNode?.removeChild(copy);
-    return lineHeight;
-  }
-
-  onMount(() => {
-    // TODO: Add and position line numbers
-    const lineNums = document.querySelector(".line-nums");
-    const pre = document.querySelector("pre");
-    const code = document.querySelector("code");
-
-    if (!settings.getSettings().lineWrapping) {
-        pre?.classList.add("no-wrap");
-        code?.classList.add("no-wrap");
+            script.addEventListener("load", () => {
+                // @ts-ignore
+                hljs.highlightElement(document.querySelector("code"));
+            });
+        } else {
+            // @ts-ignore
+            hljs.highlightAll();
+        }
     }
 
-    if (settings.getSettings().lineNumbers) {
-      const codeBlock = document.querySelector(".code-block");
-      if (lineNums && pre && code) {
-        const lines = code?.textContent?.split("\n");
-        if (!lines) return;
+    function getLineHeight(element: HTMLElement) {
+        const copy = element.cloneNode() as HTMLElement;
+        copy.style.visibility = "hidden";
+        copy.style.position = "absolute";
+        copy.textContent = "a";
+        element.parentNode?.append(copy);
+        const lineHeight = copy.offsetHeight;
+        element.parentNode?.removeChild(copy);
+        return lineHeight;
+    }
 
-        const codeBlockClone = codeBlock?.cloneNode(true) as HTMLElement;
-        codeBlockClone.style.visibility = "hidden";
-        codeBlockClone.style.position = "absolute";
-        codeBlockClone.style.width = getComputedStyle(codeBlock).width;
-        codeBlockClone.style.height = getComputedStyle(codeBlock).height;
-        codeBlock?.parentElement?.append(codeBlockClone);
+    onMount(() => {
+        // TODO: Add and position line numbers
+        const lineNums = document.querySelector(".line-nums");
+        const pre = document.querySelector("pre");
+        const code = document.querySelector("code");
 
-        const codeClone = codeBlockClone.querySelector("code");
-
-        for (let i = 0; i < lines.length; i++) {
-          console.log("----- ", i, "-----");
-          const content = lines[i - 1] || "";
-
-          console.log("line", content);
-          const line = document.createElement("span");
-          line.style.visibility = "hidden";
-          line.style.position = "absolute";
-          line.style.width = "100%";
-          line.textContent = `${content}\n`;
-          codeClone?.append(line);
-          const lineHeight = line.offsetHeight;
-          console.log("lineHeight", lineHeight);
-          const singleLineHeight = getLineHeight(line);
-          console.log("singleLineHeight", singleLineHeight);
-
-          const lineNum = document.createElement("span");
-          lineNum.textContent = (i + 1).toString();
-          console.log("lineNum", lineNum.textContent);
-
-          if (i >= 1 && content.length > 0) {
-            // get the number of lines this line takes up
-            console.log("raw numLines", lineHeight / singleLineHeight);
-            const numLines = Math.ceil(lineHeight / singleLineHeight);
-            console.log("numLines", numLines);
-
-            lineNum.style.marginTop = `${(numLines - 1) * singleLineHeight}px`;
-          }
-
-          lineNums.append(lineNum);
+        if (!settings.getSettings().lineWrapping) {
+            pre?.classList.add("no-wrap");
+            code?.classList.add("no-wrap");
         }
 
-        codeBlockClone.remove();
-      }
-    } else {
-      lineNums?.remove();
-    }
+        if (settings.getSettings().lineNumbers) {
+            const codeBlock = document.querySelector(".code-block");
+            if (lineNums && pre && code) {
+                const lines = code?.textContent?.split("\n");
+                if (!lines) return;
 
-    // Fix the scroll position
-    // @ts-ignore
-    document.querySelector("pre")?.addEventListener("scroll", (e) => {
-      // @ts-ignore
-      lineNums.scrollTop = (e.target as HTMLElement).scrollTop;
+                const codeBlockClone = codeBlock?.cloneNode(true) as HTMLElement;
+                codeBlockClone.style.visibility = "hidden";
+                codeBlockClone.style.position = "absolute";
+                codeBlockClone.style.width = getComputedStyle(codeBlock).width;
+                codeBlockClone.style.height =
+                getComputedStyle(codeBlock).height;
+                codeBlock?.parentElement?.append(codeBlockClone);
+
+                const codeClone = codeBlockClone.querySelector("code");
+                codeClone.textContent = "";
+
+                for (let i = 0; i < lines.length; i++) {
+                    const content = lines[i - 1] || "";
+                    const line = document.createElement("span");
+                    line.style.width = "100%";
+                    line.textContent = `${content}\n`;
+                    codeClone?.append(line);
+                    const lineHeight = line.offsetHeight;
+                    const singleLineHeight = getLineHeight(line);
+
+                    const lineNum = document.createElement("span");
+                    lineNum.textContent = (i + 1).toString();
+
+                    if (i >= 1 && content.length > 0) {
+                        // get the number of lines this line takes up
+                        const numLines = Math.ceil(lineHeight / singleLineHeight);
+                        lineNum.style.marginTop = `${(numLines - 1) * singleLineHeight}px`;
+                    }
+
+                    lineNums.append(lineNum);
+                }
+
+                codeBlockClone.remove();
+            }
+        } else {
+            lineNums?.remove();
+        }
+
+        // Fix the scroll position
+        /*let previousScrollTop = 0;
+        pre?.addEventListener("scroll", () => {
+            if (!lineNums || !pre) return;
+
+            let scrollingDown = pre.scrollTop > previousScrollTop;
+            previousScrollTop = pre.scrollTop;
+
+            if (scrollingDown) {
+                console.log("lineNums scrollTop", lineNums.scrollTop);
+                console.log("lineNums offsetHeight", lineNums.offsetHeight);
+                console.log("lineNums scrollHeight", lineNums.scrollHeight);
+                console.log("sum of scrollTop and offsetHeight", lineNums.scrollTop + lineNums.offsetHeight);
+                // we might be at the bottom of the line numbers, but not the code block... So stop scrolling the line numbers if we're at the bottom of the line numbers
+                if (lineNums.scrollTop + lineNums.offsetHeight < lineNums.scrollHeight) {
+                    lineNums.scrollTop = pre.scrollTop;
+                }
+            } else {
+                console.log("scrolling up");
+                lineNums?.scrollTo(0, pre.scrollTop);
+            }
+        });*/
     });
-  });
 </script>
 
 <HighlightJS hljsLoadedCallback={loadLanguage} />
 
 <div class="code-block">
-  <div class="line-nums" />
-  <pre>{#if languageAlias}<code class="language-{languageAlias}">{code}</code>{:else}<code>{code}</code>{/if}</pre>
+    <div class="line-nums" />
+    <pre>{#if languageAlias}<code class="language-{languageAlias}">{code}</code>{:else}<code>{code}</code>{/if}</pre>
 </div>
 
 <style>
-  :global(html) {
-    --code-line-height: 20px;
-    --lang-indicator-color: rgb(68, 68, 68);
-  }
+    :global(html) {
+        --code-line-height: 20px;
+        --lang-indicator-color: rgb(68, 68, 68);
+    }
 
-  :global(html[data-theme="light"]) {
-    --lang-indicator-color: rgb(175, 175, 175);
-  }
+    :global(html[data-theme="light"]) {
+        --lang-indicator-color: rgb(175, 175, 175);
+    }
 
-  .code-block {
-    position: relative;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
-    color: var(--text);
-    font-family: monospace, sans-serif;
-    font-size: 15px;
-    line-height: var(--code-line-height);
-    padding: 20px;
-  }
+    .code-block {
+        position: relative;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+        color: var(--text);
+        font-family: monospace, sans-serif;
+        font-size: 15px;
+        line-height: var(--code-line-height);
+        padding: 20px;
+        overflow: auto;
+        scrollbar-width: none;
+    }
 
-  .line-nums {
-    min-width: 20px;
-    height: fit-content;
-    max-height: 100%;
-    font-size: 15px;
-    margin-right: 20px;
-    font-family: monospace;
-    display: flex;
-    flex-direction: column;
-    user-select: none;
-    line-height: var(--code-line-height);
-    color: var(--text-faded);
-    text-align: center;
-    overflow: hidden;
-  }
+    .code-block::-webkit-scrollbar {
+        display: none;
+    }
 
-  .line-nums :global(span) {
-    position: relative;
-    color: var(--text-faded);
-    text-align: center;
-  }
+    .line-nums {
+        min-width: 20px;
+        height: fit-content;
+        max-height: 100%;
+        font-size: 15px;
+        margin-right: 20px;
+        font-family: monospace;
+        display: flex;
+        flex-direction: column;
+        user-select: none;
+        line-height: var(--code-line-height);
+        color: var(--text-faded);
+        text-align: center;
+    }
 
-  pre {
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    overflow: auto;
-    tab-size: 4;
+    .line-nums :global(span) {
+        position: relative;
+        color: var(--text-faded);
+        text-align: center;
+    }
 
-    border: none;
-    color: var(--text);
-    background: none;
-    white-space: pre-line;
-  }
+    pre {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        tab-size: 4;
 
-  code {
-    white-space: pre-line;
-  }
+        border: none;
+        color: var(--text);
+        background: none;
+        white-space: pre-line;
+    }
 
-  pre,
-  code,
-  code :global(*),
-  .line-nums {
-    font-family: monospace;
-    font-size: 15px;
-    line-height: var(--code-line-height);
-  }
+    code {
+        white-space: pre-line;
+    }
 
-  code {
-    background: none;
-    color: var(--text);
-  }
+    pre,
+    code,
+    code :global(*),
+    .line-nums {
+        font-family: monospace;
+        font-size: 15px;
+        line-height: var(--code-line-height);
+    }
 
-  code,
-  code :global(*) {
-    padding: 0;
-    margin: 0;
-  }
+    code {
+        background: none;
+        color: var(--text);
+    }
 
-  .no-wrap {
-    white-space: pre;
-  }
+    code,
+    code :global(*) {
+        padding: 0;
+        margin: 0;
+    }
+
+    .no-wrap {
+        white-space: pre;
+    }
 </style>

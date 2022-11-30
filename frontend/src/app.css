@@ -2,8 +2,8 @@
 @import url("https://fonts.googleapis.com/css?family=Manrope");
 
 html {
-	--footer-spacing: 20px;
-	--footer-height: 80px;
+	--action-bar-spacing: 20px;
+	--action-bar-height: 80px;
 
 	/* colours */
 	--primary: #C91212;

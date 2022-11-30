@@ -164,7 +164,7 @@ export function setFancyLights(fancyLights: boolean) {
 
 export function positionContent(target: HTMLElement) {
     const actionBarPos = getSettings().actionbarPosition;
-	const calc = "calc(var(--footer-height) + var(--footer-spacing) * 2)";
+	const calc = "calc(var(--action-bar-height) + var(--action-bar-spacing) * 2)";
 	if (actionBarPos === "top") {
 		target.style.paddingTop = calc;
 		target.style.paddingBottom = "20px";

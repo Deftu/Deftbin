@@ -29,7 +29,7 @@ export function performCopyLink(action: string) {
     notifications.post({
         title: "Link copied",
         message: "The link to this page has been copied to your clipboard.",
-        type: notifications.NotificationType.Info
+        type: notifications.NotificationType.Success
     });
 }
 

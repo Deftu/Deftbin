@@ -1,4 +1,8 @@
 <script lang="ts">
+    import {
+        loading
+    } from "$lib/loading";
+
 	import * as settings from "$lib/settings/settings";
   	import HighlightJS from '$lib/code/HighlightJS.svelte';
 	import ActionBar from '$lib/action/ActionBar.svelte';
@@ -44,12 +48,13 @@
 					const index = Array.prototype.indexOf.call(elements, e.target);
 					if (index > -1 && index < elements.length - 1) {
 						elements[index + 1].focus();
+                        e.preventDefault();
 					}
 				}
             }
         });
 
-        loading = false;
+        loading.set(false);
 	});
 </script>
 

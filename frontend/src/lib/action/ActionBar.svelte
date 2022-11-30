@@ -37,15 +37,17 @@
 
         const theTooltip = tooltip as HTMLElement;
         theTooltip.style.display = "block";
-        theTooltip.style.left = `${action.getBoundingClientRect().left + action.getBoundingClientRect().width / 2 - theTooltip.getBoundingClientRect().width / 2}px`;
+        theTooltip.textContent = shortcut;
+
+        const rect = action.getBoundingClientRect();
+        // center the tooltip on the action button, factor out the margin
+        theTooltip.style.left = `${rect.left + rect.width / 2 - theTooltip.offsetWidth / 2 - 10}px`;
 
         if (settings.getSettings().actionbarPosition === "top") {
-            theTooltip.style.top = `${action.getBoundingClientRect().bottom}px`;
+            theTooltip.style.top = `${rect.top + rect.height}px`;
         } else {
-            theTooltip.style.top = `${action.getBoundingClientRect().top - theTooltip.getBoundingClientRect().height}px`;
+            theTooltip.style.top = `${rect.top - theTooltip.offsetHeight - 20}px`;
         }
-
-        theTooltip.textContent = shortcut;
     }
 
     function hideTooltip() {
@@ -60,7 +62,7 @@
 <div class="tooltip" />
 <div class="action-bar">
     <div class="left">
-        <h1 class="brand-name">Deftbin</h1>
+        <h1 class="brand-name"><a href="/"><span>Deft</span>bin</a></h1>
         <SettingsButton />
     </div>
     <div class="right">
@@ -130,8 +132,8 @@
     .action-bar {
         position: fixed;
 
-        width: calc(100% - var(--footer-spacing) * 2);
-        max-height: var(--footer-height);
+        width: calc(100% - var(--action-bar-spacing) * 2);
+        max-height: var(--action-bar-height);
 
         display: flex;
         flex-direction: row;
@@ -139,8 +141,8 @@
         align-items: center;
         user-select: none;
 
-        padding: var(--footer-spacing) calc(var(--footer-spacing) * 2) var(--footer-spacing) calc(var(--footer-spacing) * 2);
-        margin: var(--footer-spacing);
+        padding: var(--action-bar-spacing) calc(var(--action-bar-spacing) * 2) var(--action-bar-spacing) calc(var(--action-bar-spacing) * 2);
+        margin: var(--action-bar-spacing);
         border-radius: 25px;
         background-color: var(--background-2);
     }
@@ -155,7 +157,21 @@
         margin: 0;
         margin-left: 10px;
         margin-right: 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .brand-name * {
+        text-decoration: none;
+        font-family: inherit;
         font-size: 25px;
+        font-weight: 500;
+    }
+
+    .brand-name span {
         font-weight: 700;
     }
 
@@ -169,7 +185,7 @@
 
     @media (max-width: 850px) {
         :global(html) {
-            --footer-height: 100px;
+            --action-bar-height: 100px;
         }
 
         .action-bar {
@@ -179,7 +195,7 @@
         }
 
         .left {
-            margin-bottom: 20px;
+            margin-bottom: 5px;
         }
 
         .right {
@@ -191,7 +207,7 @@
 
     @media (max-width: 695px) {
         :global(html) {
-            --footer-height: 150px;
+            --action-bar-height: 150px;
         }
 
         .right button {
@@ -199,9 +215,9 @@
         }
     }
 
-    @media (max-width: 410px) {
+    @media (max-width: 420px) {
         :global(html) {
-            --footer-height: 200px;
+            --action-bar-height: 200px;
         }
     }
 
