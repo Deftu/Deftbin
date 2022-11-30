@@ -78,6 +78,46 @@ html[data-theme="monokai"] {
     --scrollbar-thumb: #C91212;
 }
 
+html[data-theme="catppuccin-latte"] {
+    --background: #eff1f5;
+    --background-2: #e6e9ef;
+    --background-3: #dce0e8;
+    --text: #4c4f69;
+    --text-faded: #5c5f77;
+    --scrollbar-track: #ccd0da;
+    --scrollbar-thumb: #d20f39;
+}
+
+html[data-theme="catppuccin-frappe"] {
+    --background: #303446;
+    --background-2: #292c3c;
+    --background-3: #232634;
+    --text: #c6d0f5;
+    --text-faded: #b5bfe2;
+    --scrollbar-track: #414559;
+    --scrollbar-thumb: #e78284;
+}
+
+html[data-theme="catppuccin-macchiato"] {
+    --background: #24273a;
+    --background-2: #1e2030;
+    --background-3: #181926;
+    --text: #cad3f5;
+    --text-faded: #b8c0e0;
+    --scrollbar-track: #363a4f;
+    --scrollbar-thumb: #ed8796;
+}
+
+html[data-theme="catppuccin-mocha"] {
+    --background: #1e1e2e;
+    --background-2: #181825;
+    --background-3: #11111b;
+    --text: #cdd6f4;
+    --text-faded: #bac2de;
+    --scrollbar-track: #313244;
+    --scrollbar-thumb: #f38ba8;
+}
+
 * {
 	box-sizing: border-box;
 	margin: 0;

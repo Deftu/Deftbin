@@ -17,7 +17,11 @@ export enum Theme {
     Dark = "dark",
     OneDarkPro = "onedarkpro",
     Synthwave84 = "synthwave84",
-    Monokai = "monokai"
+    Monokai = "monokai",
+    "Catppuccin Latte" = "catppuccin-latte",
+    "Catppuccin Frappe" = "catppuccin-frappe",
+    "Catppuccin Macchiato" = "catppuccin-macchiato",
+    "Catppuccin Mocha" = "catppuccin-mocha",
 }
 
 export function getThemeFromValue(value: string): string {
@@ -26,6 +30,10 @@ export function getThemeFromValue(value: string): string {
     if (value === "onedarkpro") return "OneDarkPro";
     if (value === "synthwave84") return "Synthwave84";
     if (value === "monokai") return "Monokai";
+    if (value === "catppuccin-latte") return "Catppuccin Latte";
+    if (value === "catppuccin-frappe") return "Catppuccin Frappe";
+    if (value === "catppuccin-macchiato") return "Catppuccin Macchiato";
+    if (value === "catppuccin-mocha") return "Catppuccin Mocha";
     return "Dark";
 }
 
@@ -35,6 +43,10 @@ export function getThemeFromName(name: string): string {
     if (name === "OneDarkPro") return "onedarkpro";
     if (name === "Synthwave84") return "synthwave84";
     if (name === "Monokai") return "monokai";
+    if (name === "Catppuccin Latte") return "catppuccin-latte";
+    if (name === "Catppuccin Frappe") return "catppuccin-frappe";
+    if (name === "Catppuccin Macchiato") return "catppuccin-macchiato";
+    if (name === "Catppuccin Mocha") return "catppuccin-mocha";
     return "dark";
 }
 
