@@ -79,7 +79,7 @@ app.post("/new", async (req, res) => {
  */
 app.post("/documents", async (req, res) => {
     const document = req.body;
-
+    console.log(document);
 
     const key = await handler.create({
         title: null,
@@ -87,7 +87,7 @@ app.post("/documents", async (req, res) => {
         "content": JSON.stringify(document)
     });
 
-    res.status(201).json({
+    res.status(200).json({
         "key": key
     });
 });
