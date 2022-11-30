@@ -5,6 +5,7 @@ import {
 
 export const fetchBackend = async (path: string, options: RequestInit = {}) => {
     let url = "";
+    
     if (PUBLIC_BACKEND_HOST) {
         // check scheme
         if (!PUBLIC_BACKEND_HOST.startsWith("http://") && !PUBLIC_BACKEND_HOST.startsWith("https://")) url += "http://";
