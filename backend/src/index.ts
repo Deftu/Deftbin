@@ -58,6 +58,7 @@ app.get("/documents/:key", async (req, res) => {
 });
 
 app.post("/new", async (req, res) => {
+    console.log("request", req);
     const document = req.body;
     console.log("Creating document", document);
 
