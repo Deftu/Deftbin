@@ -99,29 +99,6 @@
         } else {
             lineNums?.remove();
         }
-
-        // Fix the scroll position
-        /*let previousScrollTop = 0;
-        pre?.addEventListener("scroll", () => {
-            if (!lineNums || !pre) return;
-
-            let scrollingDown = pre.scrollTop > previousScrollTop;
-            previousScrollTop = pre.scrollTop;
-
-            if (scrollingDown) {
-                console.log("lineNums scrollTop", lineNums.scrollTop);
-                console.log("lineNums offsetHeight", lineNums.offsetHeight);
-                console.log("lineNums scrollHeight", lineNums.scrollHeight);
-                console.log("sum of scrollTop and offsetHeight", lineNums.scrollTop + lineNums.offsetHeight);
-                // we might be at the bottom of the line numbers, but not the code block... So stop scrolling the line numbers if we're at the bottom of the line numbers
-                if (lineNums.scrollTop + lineNums.offsetHeight < lineNums.scrollHeight) {
-                    lineNums.scrollTop = pre.scrollTop;
-                }
-            } else {
-                console.log("scrolling up");
-                lineNums?.scrollTo(0, pre.scrollTop);
-            }
-        });*/
     });
 </script>
 
@@ -192,11 +169,7 @@
         border: none;
         color: var(--text);
         background: none;
-        white-space: pre-line;
-    }
-
-    code {
-        white-space: pre-line;
+        white-space: pre-wrap;
     }
 
     pre,
