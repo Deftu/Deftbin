@@ -1,5 +1,3 @@
-import crypto from "crypto";
-
-export function generateHashKey(length: number): string {
-    return crypto.randomBytes(length).toString("hex");
+export default interface KeyGenerator {
+    generateKey(length: number): string;
 }

@@ -1,20 +1,31 @@
-import DocumentStore from "./store";
+import DocumentStore, {
+    DocumentStoreOptions
+} from "../store";
+import KeyGenerator from "../keygen";
 import Document from "../document";
-import {
-    generateHashKey
-} from "../keygen";
 import * as fs from "fs";
 import * as fsPromises from "fs/promises";
 
+export type FileStoreOptions = {
+    path: string;
+} & DocumentStoreOptions;
+
 export default class FileDocumentStore implements DocumentStore {
+    private readonly keyGenerator: KeyGenerator;
     private readonly directory: string;
 
-    constructor(directory: string = "data") {
-        this.directory = directory;
-        // create the directory if it doesn't exist
-        fsPromises.mkdir(this.directory, {
+    constructor(options: FileStoreOptions) {
+        // check if the path is provided
+        if (!options.path) throw new Error("No path provided");
+
+        // check if the path exists
+        fsPromises.mkdir(options.path, {
             recursive: true
         });
+
+        // setup
+        this.keyGenerator = options.keyGenerator;
+        this.directory = options.path;
     }
 
     private getFilePath(key: string): string {
@@ -25,13 +36,13 @@ export default class FileDocumentStore implements DocumentStore {
         // check if the key exists
         if (fs.existsSync(this.getFilePath(key))) {
             // if it does, generate a new key and try again
-            return this.chooseKey(generateHashKey(key.length));
+            return this.chooseKey(this.keyGenerator.generateKey(key.length));
         } else return key;
     }
 
     public async create(keyLength: number, document: Document): Promise<string> {
         // generate a random key
-        const key = this.chooseKey(generateHashKey(keyLength));
+        const key = this.chooseKey(this.keyGenerator.generateKey(keyLength));
         // write the document to the file system
         await fsPromises.writeFile(this.getFilePath(key), JSON.stringify(document, null, 4));
         // return the key

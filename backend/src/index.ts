@@ -10,8 +10,8 @@ if (!runDirExists) {
 
 process.chdir(runDir);
 
-// setup dotenv
-require("dotenv").config();
+// read config
+import config from "./config";
 
 // import the application internals
 import express from "express";
@@ -22,7 +22,20 @@ import DocumentHandler from "./handler";
 const app = express();
 const host = process.env.HOST || "0.0.0.0";
 const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
-const handler = new DocumentHandler(process.env.KEY_LENGTH ? parseInt(process.env.KEY_LENGTH) : DocumentHandler.DEFAULT_KEY_LENGTH);
+
+const handler = new DocumentHandler(
+    parseInt(process.env.KEY_LENGTH || config?.keyLength?.toString() || DocumentHandler.DEFAULT_KEY_LENGTH),
+    () => {
+        const keyGenerator = require(`./key/${config?.keyGenerator?.type || "phonetic"}`).default;
+        const keyGenInstance = new keyGenerator(config?.keyGenerator?.options);
+
+        const store = require(`./stores/${config?.store?.type || "file"}`).default;
+        return new store({
+            ...config?.store?.options,
+            keyGenerator: keyGenInstance
+        });
+    }
+);
 
 // setup the middleware
 app.use(cors());
