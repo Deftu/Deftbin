@@ -10,6 +10,7 @@ export const POST: RequestHandler = async ({
     request
 }) => {
     const body = await request.text();
+    console.log("body", body);
     const res = await fetch.fetchBackend("documents", {
         method: "POST",
         headers: {
