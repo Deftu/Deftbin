@@ -10,12 +10,14 @@ export const POST: RequestHandler = async ({
     request
 }) => {
     const body = await request.text();
-    const res = await fetch.fetchBackend("documents", {
+    const res = await fetch.fetchBackend("new", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body
+        body: JSON.stringify({
+            content: body
+        })
     });
 
     if (res.status != 201) {
@@ -28,8 +30,5 @@ export const POST: RequestHandler = async ({
     }
 
     const document = await res.json();
-    return json({
-        status: 201,
-        body: document
-    });
+    return json(document);
 }
