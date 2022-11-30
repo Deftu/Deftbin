@@ -62,8 +62,13 @@
 	<title>Deftbin</title>
 	<meta name="robots" content="noindex,nofollow">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+
 	<meta name="title" content="Deftbin">
 	<meta name="description" content="Deftbin is a free, open-source code sharing application.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Deftbin">
+    <meta property="og:description" content="Deftbin is a free, open-source code sharing application.">
 </svelte:head>
 
 <HighlightJS />

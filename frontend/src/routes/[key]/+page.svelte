@@ -43,8 +43,13 @@
 	<title>{title}</title>
 	<meta name="robots" content="noindex,nofollow">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+
 	<meta name="title" content={title}>
 	<meta name="description" content="Deftbin is a free, open-source pastebin alternative used to share code.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content="Deftbin is a free, open-source pastebin alternative used to share code.">
 </svelte:head>
 
 <HighlightJS />

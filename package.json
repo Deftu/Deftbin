@@ -6,7 +6,7 @@
   "scripts": {
     "start": "concurrently \"cd backend && npm start\" \"cd frontend && node build/index.js\"",
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
-    "setup": "cd backend && npm install && cd ../frontend && npm install",
+    "setup": "cd backend && npm install && cd ../frontend && npm install"
   },
   "repository": {
     "type": "git",
