@@ -97,7 +97,6 @@ export function performSave(action: string) {
             content: content
         })
     }).then((res) => {
-        console.log(res);
         if (res.status == 201) {
             // navigate to the new page
             res.json().then((json) => {
