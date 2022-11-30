@@ -9,18 +9,13 @@ import type {
 export const POST: RequestHandler = async ({
     request
 }) => {
-    console.log("request", request);
     const body = await request.text();
-    console.log("body", body);
     const res = await fetch.fetchBackend("documents", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: {
-            request: request,
-            body: body
-        }
+        body
     });
 
     if (res.status != 201) {

@@ -80,10 +80,11 @@ app.post("/new", async (req, res) => {
 app.post("/documents", async (req, res) => {
     const document = req.body;
 
+
     const key = await handler.create({
         title: null,
         language: null,
-        "content": document.toString()
+        "content": JSON.stringify(document)
     });
 
     res.status(201).json({
