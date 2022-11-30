@@ -10,12 +10,14 @@ export const POST: RequestHandler = async ({
     request
 }) => {
     const body = await request.text();
-    const res = await fetch.fetchBackend("documents", {
+    const res = await fetch.fetchBackend("new", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body
+        body: {
+            content: body
+        }
     });
 
     if (res.status != 201) {

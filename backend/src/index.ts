@@ -59,6 +59,7 @@ app.get("/documents/:key", async (req, res) => {
 
 app.post("/new", async (req, res) => {
     const document = req.body;
+    console.log("Creating document", document);
 
     if (!document.content) {
         res.status(400).json({
@@ -70,24 +71,6 @@ app.post("/new", async (req, res) => {
 
     const key = await handler.create(document);
     res.status(201).json({
-        "key": key
-    });
-});
-
-/**
- * Legacy Hastebin API support
- */
-app.post("/documents", async (req, res) => {
-    const document = req.body;
-    console.log(document);
-
-    const key = await handler.create({
-        title: null,
-        language: null,
-        "content": JSON.stringify(document)
-    });
-
-    res.status(200).json({
         "key": key
     });
 });
