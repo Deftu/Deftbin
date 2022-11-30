@@ -7,7 +7,7 @@ export const fetchBackend = async (path: string, options: RequestInit = {}) => {
     let url = "";
     if (PUBLIC_BACKEND_HOST) {
         // check scheme
-        if (!PUBLIC_BACKEND_HOST.startsWith("http://") || !PUBLIC_BACKEND_HOST.startsWith("https://")) url += "http://";
+        if (!PUBLIC_BACKEND_HOST.startsWith("http://") && !PUBLIC_BACKEND_HOST.startsWith("https://")) url += "http://";
         // remove trailing slash
         if (PUBLIC_BACKEND_HOST.endsWith("/")) url += PUBLIC_BACKEND_HOST.slice(0, -1);
         else url += PUBLIC_BACKEND_HOST;
