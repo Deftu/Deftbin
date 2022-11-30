@@ -39,6 +39,7 @@ const handler = new DocumentHandler(
 
 // setup the middleware
 app.use(cors());
+app.use(express.text());
 app.use(express.json());
 
 app.get("/documents/:key", async (req, res) => {
