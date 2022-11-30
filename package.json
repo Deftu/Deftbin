@@ -4,10 +4,9 @@
   "description": "Simple code-sharing web application similar to Hastebin.",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"cd backend && npm start\" \"cd frontend && npm start\"",
+    "start": "concurrently \"cd backend && npm start\" \"cd frontend && node build/index.js\"",
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
     "setup": "cd backend && npm install && cd ../frontend && npm install",
-    "build": "python build.py"
   },
   "repository": {
     "type": "git",
