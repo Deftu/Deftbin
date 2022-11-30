@@ -22,7 +22,7 @@ html {
 		--background-2: #D2CDC6;
 		--background-3: #F5EBE0;
 		--text: #28282B;
-		--text-faded: #28282B80;
+		--text-faded: #28282BB8;
         --scrollbar-track: #F5EBE0;
         --scrollbar-thumb: #C91212;
 	}
@@ -43,7 +43,7 @@ html[data-theme="light"] {
 	--background-2: #D2CDC6;
 	--background-3: #F5EBE0;
 	--text: #28282B;
-	--text-faded: #28282B80;
+	--text-faded: #28282BB8;
     --scrollbar-track: #F5EBE0;
     --scrollbar-thumb: #C91212;
 }
