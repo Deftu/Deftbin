@@ -18,10 +18,10 @@ export enum Theme {
     OneDarkPro = "onedarkpro",
     Synthwave84 = "synthwave84",
     Monokai = "monokai",
-    "Catppuccin Latte" = "catppuccin-latte",
-    "Catppuccin Frappe" = "catppuccin-frappe",
-    "Catppuccin Macchiato" = "catppuccin-macchiato",
-    "Catppuccin Mocha" = "catppuccin-mocha",
+    CatppuccinLatte = "catppuccin-latte",
+    CatppuccinFrappe = "catppuccin-frappe",
+    CatppuccinMacchiato = "catppuccin-macchiato",
+    CatppuccinMocha = "catppuccin-mocha"
 }
 
 export function getThemeFromValue(value: string): string {
@@ -30,10 +30,10 @@ export function getThemeFromValue(value: string): string {
     if (value === "onedarkpro") return "OneDarkPro";
     if (value === "synthwave84") return "Synthwave84";
     if (value === "monokai") return "Monokai";
-    if (value === "catppuccin-latte") return "Catppuccin Latte";
-    if (value === "catppuccin-frappe") return "Catppuccin Frappe";
-    if (value === "catppuccin-macchiato") return "Catppuccin Macchiato";
-    if (value === "catppuccin-mocha") return "Catppuccin Mocha";
+    if (value === "catppuccin-latte") return "CatppuccinLatte";
+    if (value === "catppuccin-frappe") return "CatppuccinFrappe";
+    if (value === "catppuccin-macchiato") return "CatppuccinMacchiato";
+    if (value === "catppuccin-mocha") return "CatppuccinMocha";
     return "Dark";
 }
 
@@ -43,10 +43,10 @@ export function getThemeFromName(name: string): string {
     if (name === "OneDarkPro") return "onedarkpro";
     if (name === "Synthwave84") return "synthwave84";
     if (name === "Monokai") return "monokai";
-    if (name === "Catppuccin Latte") return "catppuccin-latte";
-    if (name === "Catppuccin Frappe") return "catppuccin-frappe";
-    if (name === "Catppuccin Macchiato") return "catppuccin-macchiato";
-    if (name === "Catppuccin Mocha") return "catppuccin-mocha";
+    if (name === "CatppuccinLatte") return "catppuccin-latte";
+    if (name === "CatppuccinFrappe") return "catppuccin-frappe";
+    if (name === "CatppuccinMacchiato") return "catppuccin-macchiato";
+    if (name === "CatppuccinMocha") return "catppuccin-mocha";
     return "dark";
 }
 
