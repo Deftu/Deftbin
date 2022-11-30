@@ -2,13 +2,13 @@ import {
     error,
     redirect
 } from "@sveltejs/kit";
+import * as fetch from "$lib/fetch";
 import type {
     PageServerLoad
 } from "./$types";
 
 export const load: PageServerLoad = async ({
-    params,
-    fetch
+    params
 }) => {
     // get the key, and remove the file extension if it exists
     const key = params.key.replace(/\.[a-zA-Z0-9]+/gm, "");
@@ -16,10 +16,11 @@ export const load: PageServerLoad = async ({
     var res;
 
     try {
-        res = await fetch(`http://localhost:3001/documents/${key}`);
+        res = await fetch.fetchBackend(`documents/${key}`);
     } catch (err) {
         throw error(500, {
-            message: "Could not connect to the server (" + err + ")"
+            message: "An error occurred while fetching the document",
+            errMsg: `${err}`
         });
     }
 

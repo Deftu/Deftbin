@@ -1,4 +1,9 @@
-<script>
+<script lang="ts">
+    import {
+        loading
+    } from "$lib/loading";
+
+	import * as settings from "$lib/settings/settings";
 	import HighlightJS from '$lib/code/HighlightJS.svelte';
 	import ActionBar from '$lib/action/ActionBar.svelte';
     import CodeBlock from '$lib/code/CodeBlock.svelte';
@@ -6,17 +11,32 @@
     import {
 		initializeActionBar
 	} from "$lib/action/actions";
-  import { onMount } from "svelte";
-    onMount(() => {
-        initializeActionBar("copy-link", "copy", "new", "save", "duplicate", "raw");
-    });
+  	import { onMount } from "svelte";
+  	import { error } from "@sveltejs/kit";
+  	import type {
+		PageData
+	} from "./$types";
 
-    /** @type {import('./$types').PageData} */
-    export let data;
+    export let data: PageData;
 
     var title = "Deftbin";
     const docTitle = data?.props?.document?.title || data.props?.key?.toUpperCase() || "";
     if (docTitle) title = `${title} - ${docTitle}`;
+
+    onMount(() => {
+        initializeActionBar("copy-link", "copy", "duplicate", "raw");
+
+		const content = document.querySelector(".content");
+		if (!content) throw error(500, "Could not find content element!");
+		settings.positionContent(content as HTMLElement);
+		settings.setupTabSize(content as HTMLElement);
+
+		const container = document.querySelector(".container");
+		if (!container) throw error(500, "Could not find container element!");
+		settings.setupFancyLights(container as HTMLElement);
+
+        loading.set(false);
+    });
 </script>
 
 <svelte:head>
@@ -41,7 +61,7 @@
 		display: flex;
 		flex-direction: row;
 		height: 100vh;
-		padding: 20px 20px calc(var(--footer-height) + var(--footer-spacing) * 2) 20px;
+		padding: 20px;
 	}
 
 	.container {
@@ -50,5 +70,6 @@
 		display: flex;
 		flex-direction: row;
 		flex: 1;
+        max-width: 100%;
 	}
 </style>

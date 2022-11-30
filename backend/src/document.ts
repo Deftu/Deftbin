@@ -1,5 +1,5 @@
 export default interface Document {
-    title: string | undefined;
-    language: string | undefined;
+    title: string | null;
+    language: string | null;
     content: string;
 }

@@ -1,13 +1,16 @@
 import {
     json
 } from "@sveltejs/kit";
+import * as fetch from "$lib/fetch";
 import type {
     RequestHandler
 } from "./$types";
 
-export const GET: RequestHandler = async ({ params }) => {
+export const GET: RequestHandler = async ({
+    params
+}) => {
     const key = params.key;
-    const res = await fetch(`http://localhost:3001/documents/${key}`);
+    const res = await fetch.fetchBackend(`documents/${key}`);
     if (res.status != 200) {
         return json({
             status: 404,

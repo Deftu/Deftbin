@@ -1,4 +1,6 @@
+import * as fetch from "$lib/fetch";
 import * as utils from "$lib/utils";
+import * as notifications from "$lib/notifications/notifications";
 import {
     browser
 } from "$app/environment"
@@ -24,6 +26,11 @@ export function performCopyLink(action: string) {
 
     // copy the current URL to the clipboard
     navigator.clipboard.writeText(window.location.href);
+    notifications.post({
+        title: "Link copied",
+        message: "The link to this page has been copied to your clipboard.",
+        type: notifications.NotificationType.Info
+    });
 }
 
 export function performCopy(action: string) {
@@ -40,6 +47,11 @@ export function performCopy(action: string) {
     if (!textContent) return;
 
     navigator.clipboard.writeText(textContent);
+    notifications.post({
+        title: "Code copied",
+        message: "The code has been copied to your clipboard.",
+        type: notifications.NotificationType.Success
+    });
 }
 
 export function performNew(action: string) {
@@ -75,22 +87,30 @@ export function performSave(action: string) {
     if (!extension) return;
 
     // make the api request to save the document
-    fetch("http://127.0.0.1:3001/documents", {
+    fetch.fetchBackend("new", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            language: highlighted.language,
+            language: language,
             content: content
         })
     }).then((res) => {
+        console.log(res);
         if (res.status == 201) {
             // navigate to the new page
             res.json().then((json) => {
                 window.location.href = `/${json.key}.${extension}`;
             });
         }
+    }).catch((err) => {
+        console.error(err);
+        notifications.post({
+            title: "Error while saving",
+            message: "An error occurred while saving the document. It has been printed to the console.",
+            type: notifications.NotificationType.Error
+        });
     });
 }
 

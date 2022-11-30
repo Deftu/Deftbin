@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
+	<head data-sveltekit-prefetch>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
+		<script src="theme.js"></script>
 		%sveltekit.head%
 	</head>
-	<body data-sveltekit-prefetch>
-		<div style="display: contents; height: 100vh;">%sveltekit.body%</div>
+	<body>
+		<div style="height: 100vh;">%sveltekit.body%</div>
 	</body>
 </html>

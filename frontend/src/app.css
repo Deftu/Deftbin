@@ -6,11 +6,14 @@ html {
 	--footer-height: 80px;
 
 	/* colours */
+	--primary: #C91212;
 	--background: #28282B;
 	--background-2: #131316;
 	--background-3: #1D1D20;
 	--text: #FDFBF9;
 	--text-faded: #FDFBF980;
+    --scrollbar-track: #1D1D20;
+    --scrollbar-thumb: #C91212;
 }
 
 @media (prefers-color-scheme: light) {
@@ -20,21 +23,87 @@ html {
 		--background-3: #F5EBE0;
 		--text: #28282B;
 		--text-faded: #28282B80;
+        --scrollbar-track: #F5EBE0;
+        --scrollbar-thumb: #C91212;
 	}
+}
+
+html[data-theme="dark"] {
+	--background: #28282B;
+	--background-2: #131316;
+	--background-3: #1D1D20;
+	--text: #FDFBF9;
+	--text-faded: #FDFBF980;
+    --scrollbar-track: #1D1D20;
+    --scrollbar-thumb: #C91212;
+}
+
+html[data-theme="light"] {
+	--background: #FDFBF9;
+	--background-2: #D2CDC6;
+	--background-3: #F5EBE0;
+	--text: #28282B;
+	--text-faded: #28282B80;
+    --scrollbar-track: #F5EBE0;
+    --scrollbar-thumb: #C91212;
+}
+
+html[data-theme="onedarkpro"] {
+	--background: #282C34;
+	--background-2: #21252B;
+	--background-3: #2C323C;
+	--text: #ABB2BF;
+	--text-faded: #ABB2BF80;
+    --scrollbar-track: #2C323C;
+    --scrollbar-thumb: #C91212;
+}
+
+html[data-theme="synthwave84"] {
+	--background: #2B213A;
+	--background-2: #1E0F2B;
+	--background-3: #2e0952;
+	--text: #FDFBF9;
+	--text-faded: #FDFBF980;
+    --scrollbar-track: #2e0952;
+    --scrollbar-thumb: #C91212;
+}
+
+html[data-theme="monokai"] {
+	--background: #272822;
+	--background-2: #1E1E1E;
+	--background-3: #2D2D2D;
+	--text: #F8F8F2;
+	--text-faded: #F8F8F280;
+    --scrollbar-track: #2D2D2D;
+    --scrollbar-thumb: #C91212;
 }
 
 * {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
-	scrollbar-width: none;
 	font-family: "Manrope", sans-serif;
-	scroll-behavior: initial;
 	color: var(--text);
+
+    /* scrollbar */
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    scrollbar-width: thin;
 }
 
 ::-webkit-scrollbar {
-	display: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 5px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -43,7 +112,7 @@ h1, h2, h3, h4, h5, h6 {
 	padding: 0;
 }
 
-body, main {
+body {
 	background-color: var(--background);
 	height: 100vh;
 }

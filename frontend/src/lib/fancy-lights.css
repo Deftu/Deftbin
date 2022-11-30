@@ -1,0 +1,74 @@
+html {
+    --fancy-lights-horizontal-offset: 5px;
+    --fancy-lights-vertical-offset: 1px;
+    --fancy-lights-duration: 5s;
+}
+
+.fancy-lights {
+    content: "";
+    -webkit-box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #ffff01,0 0 4px 2px #ffff01;
+    box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #ffff01,0 0 4px 2px #ffff01;
+    -webkit-animation-name: gradient-shadow;
+    animation-name: gradient-shadow;
+    -webkit-animation-timing-function: ease;
+    animation-timing-function: ease;
+    -webkit-animation-duration: var(--fancy-lights-duration);
+    animation-duration: var(--fancy-lights-duration);
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    z-index: 100;
+}
+
+@keyframes gradient-shadow {
+    0% {
+      -webkit-box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #C586C0,0 0 4px 2px #C586C0;
+              box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #C586C0,0 0 4px 2px #C586C0;
+    }
+    20% {
+      -webkit-box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #0ff,0 0 4px 2px #0ff;
+              box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #0ff,0 0 4px 2px #0ff;
+    }
+    40% {
+      -webkit-box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #0f0,0 0 4px 2px #0f0;
+              box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #0f0,0 0 4px 2px #0f0;
+    }
+    60% {
+      -webkit-box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #ffff01,0 0 4px 2px #ffff01;
+              box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #ffff01,0 0 4px 2px #ffff01;
+    }
+    80% {
+      -webkit-box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #f00,0 0 4px 2px #f00;
+              box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #f00,0 0 4px 2px #f00;
+    }
+    100% {
+      -webkit-box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #C586C0,0 0 4px 2px #C586C0;
+              box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #C586C0,0 0 4px 2px #C586C0;
+    }
+  }
+
+@-webkit-keyframes gradient-shadow {
+    0% {
+      -webkit-box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #C586C0,0 0 4px 2px #C586C0;
+              box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #C586C0,0 0 4px 2px #C586C0;
+    }
+    20% {
+      -webkit-box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #0ff,0 0 4px 2px #0ff;
+              box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #0ff,0 0 4px 2px #0ff;
+    }
+    40% {
+      -webkit-box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #0f0,0 0 4px 2px #0f0;
+              box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #0f0,0 0 4px 2px #0f0;
+    }
+    60% {
+      -webkit-box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #ffff01,0 0 4px 2px #ffff01;
+              box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #ffff01,0 0 4px 2px #ffff01;
+    }
+    80% {
+      -webkit-box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #f00,0 0 4px 2px #f00;
+              box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #f00,0 0 4px 2px #f00;
+    }
+    100% {
+      -webkit-box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #C586C0,0 0 4px 2px #C586C0;
+              box-shadow: 0 0 var(--fancy-lights-horizontal-offset) var(--fancy-lights-vertical-offset) #C586C0,0 0 4px 2px #C586C0;
+    }
+  }

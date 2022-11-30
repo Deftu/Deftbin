@@ -1,34 +1,55 @@
-<script>
+<script lang="ts">
+	import * as settings from "$lib/settings/settings";
   	import HighlightJS from '$lib/code/HighlightJS.svelte';
 	import ActionBar from '$lib/action/ActionBar.svelte';
 	import {
 		onMount
 	} from 'svelte';
+  	import type {
+		PageData
+	} from "./$types";
+  	import {
+		error
+	} from "@sveltejs/kit";
 
-    /** @type {import('./$types').PageData} */
-    export let data;
+    export let data: PageData;
 
 	let content = data?.props?.content || "";
 
 	onMount(() => {
+		const content = document.querySelector(".content");
+		if (!content) throw error(500, "Could not find content element!");
+		settings.positionContent(content as HTMLElement);
+		settings.setupTabSize(content as HTMLElement);
+
+		const container = document.querySelector(".container");
+		if (!container) throw error(500, "Could not find container element!");
+		settings.setupFancyLights(container as HTMLElement);
+
 		// @ts-ignore
 		document.querySelector("textarea").addEventListener("keydown", (e) => {
-            if (e.key === "Tab" && !e.shiftKey && !e.ctrlKey) {
-                e.preventDefault();
-				// @ts-ignore
-                let start = e.target["selectionStart"];
-				// @ts-ignore
-                let end = e.target["selectionEnd"];
+            if (e.key === "Tab" && !e.shiftKey) {
+				if (!e.ctrlKey) {
+					const appendage = settings.getSettings().tabType === "spaces" ? " ".repeat(settings.getSettings().tabSize) : "\t".repeat(settings.getSettings().tabSize / 4);
 
-                // set textarea value to: text before caret + tab + text after caret
-				// @ts-ignore
-                e.target["value"] = e.target["value"].substring(0, start) + "\t" + e.target["value"].substring(end);
+					const start = e.target.selectionStart;
+					const end = e.target.selectionEnd;
 
-                // put caret at right position again
-				// @ts-ignore
-                e.target["selectionStart"] = e.target["selectionEnd"] = start + 1;
+					e.target.value = e.target.value.substring(0, start) + appendage + e.target.value.substring(end);
+
+					e.target.selectionStart = e.target.selectionEnd = start + appendage.length;
+					e.preventDefault();
+				} else {
+					const elements = document.querySelectorAll("input, select, textarea, button, a");
+					const index = Array.prototype.indexOf.call(elements, e.target);
+					if (index > -1 && index < elements.length - 1) {
+						elements[index + 1].focus();
+					}
+				}
             }
         });
+
+        loading = false;
 	});
 </script>
 
@@ -55,7 +76,7 @@
 		display: flex;
 		flex-direction: row;
 		height: 100vh;
-		padding: 20px 20px calc(var(--footer-height) + var(--footer-spacing) * 2) 20px;
+		padding: 20px;
 	}
 
 	.container {

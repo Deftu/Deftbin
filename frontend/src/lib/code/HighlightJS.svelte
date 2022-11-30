@@ -1,5 +1,4 @@
 <script lang="ts">
-    import "./hljs.css";
     import {
         onMount
     } from "svelte";
