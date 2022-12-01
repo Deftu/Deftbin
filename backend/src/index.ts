@@ -21,7 +21,7 @@ import DocumentHandler from "./handler";
 // setup the application
 const app = express();
 const host = process.env.HOST || "0.0.0.0";
-const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
+const port = config.port;
 
 const handler = new DocumentHandler(
     parseInt(process.env.KEY_LENGTH || config?.keyLength?.toString() || DocumentHandler.DEFAULT_KEY_LENGTH),
