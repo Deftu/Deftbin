@@ -10,38 +10,36 @@ if (!runDirExists) {
 
 process.chdir(runDir);
 
-// read config
+// Read config
 import config from "./config";
 
-// import the application internals
+// Import internal dependencies/modules
 import express from "express";
 import cors from "cors";
 import DocumentHandler from "./handler";
 
-// setup the application
+// Setup the application instances
 const app = express();
-const host = process.env.HOST || "0.0.0.0";
-const port = config.port;
-
 const handler = new DocumentHandler(
-    parseInt(process.env.KEY_LENGTH || config?.keyLength?.toString() || DocumentHandler.DEFAULT_KEY_LENGTH),
+    config.keyLength,
     () => {
-        const keyGenerator = require(`./key/${config?.keyGenerator?.type || "phonetic"}`).default;
-        const keyGenInstance = new keyGenerator(config?.keyGenerator?.options);
+        const keyGenerator = require(`./key/${config.keyGenerator.type}`).default;
+        const keyGenInstance = new keyGenerator(config.keyGenerator.options);
 
-        const store = require(`./stores/${config?.store?.type || "file"}`).default;
+        const store = require(`./stores/${config.store.type}`).default;
         return new store({
-            ...config?.store?.options,
+            ...config.store.options,
             keyGenerator: keyGenInstance
         });
     }
 );
 
-// setup the middleware
+// Setup Express the middleware
 app.use(cors());
 app.use(express.raw());
 app.use(express.json());
 
+// Setup Express the routes
 app.get("/documents/:key", async (req, res) => {
     const key = req.params.key;
     const document = await handler.get(key);
@@ -75,4 +73,5 @@ app.post("/new", async (req, res) => {
     });
 });
 
-app.listen(port, host, () => console.log(`Server is running on port ${port}.`));
+// Start the application / Listen for requests
+app.listen(config.port, config.host, () => console.log(`Server is now listening on port ${config.port}.`));

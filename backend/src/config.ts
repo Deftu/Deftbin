@@ -74,4 +74,5 @@ function initializeConfig(): Config {
     }
 }
 
-export default initializeConfig();
+const config = initializeConfig();
+export default config;
