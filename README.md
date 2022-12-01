@@ -3,6 +3,8 @@
 # Deftbin
 A simple, open-source code sharing web application made as a more complex alternative to [Pastebin](https://pastebin.com/) and [Hastebin](https://hastebin.com/).
 
+<h1>IT IS NOT RECOMMENDED TO HOST YOUR OWN INSTANCE JUST YET! DEFTBIN IS STILL IN AN INCOMPLETE STAGE.</h1>
+
 </div>
 
 ## Table of Contents
@@ -21,8 +23,6 @@ A simple, open-source code sharing web application made as a more complex altern
 - [x] Upload API
 - [x] Compatible with Hastebin API
 - [x] Themes
-- [ ] Customizable
-- [ ] Language indicators
 
 ## Installation
 
@@ -49,6 +49,6 @@ Note:
 
 ## License
 
-Deftbin is licensed under the [LGPL 3.0][lgpl] license.
+Deftbin is licensed under the [LGPL-3.0-or-later][lgpl] license.
 
 [lgpl]: https://www.gnu.org/licenses/lgpl-3.0.en.html
