@@ -1,5 +1,13 @@
+// read dotenv
+require("dotenv").config();
+
 // import fs
 import * as fs from "fs";
+
+enum AuthType {
+    Default = "default",
+    Discord = "discord"
+}
 
 type Config = {
     host: string;
@@ -13,10 +21,37 @@ type Config = {
         type: string;
         options: any;
     };
+    authentication: {
+        types: AuthType[];
+        discord: {
+            clientId: string;
+            clientSecret: string;
+            redirectUri: string;
+        };
+    }
 };
 
-// read dotenv
-require("dotenv").config();
+const defaultConfig = {
+    host: process.env.HOST || "0.0.0.0",
+    port: process.env.PORT || 3001,
+    keyLength: process.env.KEY_LENGTH || 10,
+    keyGenerator: {
+        type: process.env.KEY_GENERATOR_TYPE || "phonetic",
+        options: {}
+    },
+    store: {
+        type: process.env.STORE_TYPE || "file",
+        options: {}
+    },
+    authentication: {
+        types: process.env.AUTHENTICATION_TYPES ? process.env.AUTHENTICATION_TYPES.split(",") : [AuthType.Default],
+        discord: {
+            clientId: process.env.DISCORD_CLIENT_ID || "",
+            clientSecret: process.env.DISCORD_CLIENT_SECRET || "",
+            redirectUri: process.env.DISCORD_REDIRECT_URI || ""
+        }
+    }
+};
 
 function initializeConfig() {
     // get the config file path
@@ -24,11 +59,18 @@ function initializeConfig() {
 
     // check if the config file exists
     if (fs.existsSync(configPath)) {
-        // read the config file
-        const config = JSON.parse(fs.readFileSync(configPath, "utf-8")) as Config;
+        // Parse the config file
+        const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
 
-        // return the config
-        return config;
+        // Fallback to default config for missing values, otherwise use the content of the ocnfig file
+        return {
+            ...defaultConfig,
+            ...config
+        };
+    } else {
+        // Write the default config, since it doesn't exist, then return the default config
+        fs.writeFileSync(configPath, JSON.stringify(defaultConfig, null, 4), "utf-8");
+        return defaultConfig;
     }
 }
 
