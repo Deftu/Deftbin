@@ -2,7 +2,6 @@ import DocumentStore from "./store";
 import Document from "./document";
 
 export default class DocumentHandler {
-    public static readonly DEFAULT_KEY_LENGTH = "10";
     public readonly store: DocumentStore;
 
     constructor(

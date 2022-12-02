@@ -10,38 +10,56 @@ if (!runDirExists) {
 
 process.chdir(runDir);
 
-// read config
-import config from "./config";
+// Read config
+import config, {
+    AuthType
+} from "./config";
 
-// import the application internals
+// Import internal dependencies/modules
 import express from "express";
 import cors from "cors";
+import session from "express-session";
+import passport from "passport";
+import store from "connect-mongo";
+import "./database/database";
 import DocumentHandler from "./handler";
 
-// setup the application
+// Setup the application instances
 const app = express();
-const host = process.env.HOST || "0.0.0.0";
-const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
-
 const handler = new DocumentHandler(
-    parseInt(process.env.KEY_LENGTH || config?.keyLength?.toString() || DocumentHandler.DEFAULT_KEY_LENGTH),
+    config.keyLength,
     () => {
-        const keyGenerator = require(`./key/${config?.keyGenerator?.type || "phonetic"}`).default;
-        const keyGenInstance = new keyGenerator(config?.keyGenerator?.options);
+        const keyGenerator = require(`./key/${config.keyGenerator.type}`).default;
+        const keyGenInstance = new keyGenerator(config.keyGenerator.options);
 
-        const store = require(`./stores/${config?.store?.type || "file"}`).default;
+        const store = require(`./stores/file`).default;
         return new store({
-            ...config?.store?.options,
+            ...config.store.options,
             keyGenerator: keyGenInstance
         });
     }
 );
 
-// setup the middleware
+// Setup Express the middleware
 app.use(cors());
 app.use(express.raw());
 app.use(express.json());
+app.use(session({
+    secret: config.authentication.sessionSecret,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 60000 * 60 * 24 * 7 // 1 week
+    },
+    store: store.create({
+        mongoUrl: `mongodb://${config.database.host}${config.database.port ? `:${config.database.port}` : ""}`,
+        dbName: "sessions"
+    })
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
+// Setup Express the routes
 app.get("/documents/:key", async (req, res) => {
     const key = req.params.key;
     const document = await handler.get(key);
@@ -75,4 +93,27 @@ app.post("/new", async (req, res) => {
     });
 });
 
-app.listen(port, host, () => console.log(`Server is running on port ${port}.`));
+// Set up timeout for requests made for authentication
+app.use((req, res, next) => setTimeout(() => next(), 800));
+
+// Set up authentication using a router under /auth
+const router = express.Router();
+
+// TODO - Default authentication is not implemented yet
+
+if (config.authentication.types.includes(AuthType.Discord)) {
+    const discord = require("./auth/discord").default;
+    const discordAuth = new discord();
+    discordAuth.setup(app, router);
+}
+
+if (config.authentication.types.includes(AuthType.GitHub)) {
+    const github = require("./auth/github").default;
+    const githubAuth = new github();
+    githubAuth.setup(app, router);
+}
+
+app.use("/auth", router);
+
+// Start the application / Listen for requests
+app.listen(config.port, config.host, () => console.log(`Server is now listening on port ${config.port}.`));
