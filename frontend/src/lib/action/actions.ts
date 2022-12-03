@@ -1,4 +1,4 @@
-import * as fetch from "$lib/fetch";
+import * as fetch from "$lib/backend";
 import * as utils from "$lib/utils";
 import * as notifications from "$lib/notifications/notifications";
 import {

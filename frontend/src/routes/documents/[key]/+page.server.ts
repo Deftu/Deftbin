@@ -2,7 +2,7 @@ import {
     error,
     redirect
 } from "@sveltejs/kit";
-import * as fetch from "$lib/fetch";
+import * as fetch from "$lib/backend";
 import type {
     PageServerLoad
 } from "./$types";

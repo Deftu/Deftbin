@@ -4,34 +4,18 @@
     } from "$lib/loading";
 
 	import * as settings from "$lib/settings/settings";
-  	import HighlightJS from '$lib/code/HighlightJS.svelte';
-	import ActionBar from '$lib/action/ActionBar.svelte';
+    import Header from "$lib/nav/Header.svelte";
 	import {
 		onMount
-	} from 'svelte';
-  	import type {
-		PageData
-	} from "./$types";
-  	import {
-		error
-	} from "@sveltejs/kit";
-
-    export let data: PageData;
-
-	let content = data?.props?.content || "";
+	} from "svelte";
+    import {
+        page
+    } from "$app/stores";
+	let content = $page.data?.props?.content || "";
 
 	onMount(() => {
-		const content = document.querySelector(".content");
-		if (!content) throw error(500, "Could not find content element!");
-		settings.positionContent(content as HTMLElement);
-		settings.setupTabSize(content as HTMLElement);
-
-		const container = document.querySelector(".container");
-		if (!container) throw error(500, "Could not find container element!");
-		settings.setupFancyLights(container as HTMLElement);
-
 		// @ts-ignore
-		document.querySelector("textarea").addEventListener("keydown", (e) => {
+		/*document.querySelector("textarea").addEventListener("keydown", (e) => {
             if (e.key === "Tab" && !e.shiftKey) {
 				if (!e.ctrlKey) {
 					const appendage = settings.getSettings().tabType === "spaces" ? " ".repeat(settings.getSettings().tabSize) : "\t".repeat(settings.getSettings().tabSize / 4);
@@ -52,7 +36,7 @@
 					}
 				}
             }
-        });
+        });*/
 
         loading.set(false);
 	});
@@ -60,8 +44,6 @@
 
 <svelte:head>
 	<title>Deftbin</title>
-	<meta name="robots" content="noindex,nofollow">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<meta name="title" content="Deftbin">
 	<meta name="description" content="Deftbin is a free, open-source code sharing application.">
@@ -71,15 +53,12 @@
     <meta property="og:description" content="Deftbin is a free, open-source code sharing application.">
 </svelte:head>
 
-<HighlightJS />
-<ActionBar />
-
-<div class="content">
-	<div class="container">
-		<div class="caret-container">></div>
-		<textarea spellcheck="false">{content}</textarea>
-	</div>
+<Header />
+<!--<div class="container">
+	<div class="caret-container">></div>
+	<textarea spellcheck="false">{content}</textarea>
 </div>
+<ActionBar />-->
 
 <style>
 	.content {

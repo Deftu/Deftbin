@@ -13,6 +13,7 @@
 		"@neoconfetti/svelte": "^1.0.0",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
+		"@types/axios": "^0.14.0",
 		"@types/cookie": "^0.5.1",
 		"svelte": "^3.46.0",
 		"svelte-check": "^2.7.1",
@@ -23,9 +24,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@fortawesome/free-solid-svg-icons": "^6.2.1",
 		"@sveltejs/adapter-node": "^1.0.0-next.100",
-		"dotenv-cli": "^6.0.0",
-		"svelte-fa": "^3.0.3"
+		"axios": "^1.2.0",
+		"dotenv-cli": "^6.0.0"
 	}
 }

@@ -27,6 +27,7 @@ passport.deserializeUser(async (id: string, done) => {
         const user = await User.findOne({
             id: id
         });
+        console.log("Deserialized user", user);
         return user ? done(null, user) : done(null, null);
     } catch (err) {
         console.log(err);
@@ -38,36 +39,41 @@ passport.use(new DiscordStrategy({
     clientID: config.authentication.discord.clientId,
     clientSecret: config.authentication.discord.clientSecret,
     callbackURL: config.authentication.discord.redirectUri,
-    scope: ["identify", "email", "connections"]
+    scope: ["identify", "connections"]
 }, async (
     accessToken: string,
     refreshToken: string,
     profile: DiscordProfile,
     done: VerifyCallback
 ) => {
-    const {
-        id: discordId
-    } = profile;
     try {
         // find existing user with discord id
         const github = profile.connections?.find((connection: any) => connection.type === "github");
+        // find existing user with either github or discord id
+        // update existing user's data with new data
         const existingUser = await User.findOneAndUpdate(
             {
-                "connections.discord.id": discordId
+                $or: [
+                    {
+                        "connections.discord.id": profile.id
+                    },
+                    {
+                        "connections.github.id": github?.id
+                    }
+                ]
             },
             {
                 $set: {
+                    avatar: profile.avatar,
                     connections: {
                         discord: {
+                            id: profile.id,
                             username: profile.username,
-                            discriminator: profile.discriminator,
-                            avatar: profile.avatar,
-                            refreshToken,
-                            id: discordId
+                            discriminator: profile.discriminator
                         },
                         github: {
-                            username: github?.name,
-                            id: github?.id
+                            id: github?.id,
+                            username: github?.name
                         }
                     }
                 }
@@ -81,13 +87,11 @@ passport.use(new DiscordStrategy({
             // generate an ID for the user
             id: userId,
             username: profile.username,
-            email: profile.email,
             connections: {
                 discord: {
-                    id: discordId,
+                    id: profile.id,
                     username: profile.username,
-                    discriminator: profile.discriminator,
-                    refreshToken
+                    discriminator: profile.discriminator
                 },
                 github: {
                     id: github?.id,

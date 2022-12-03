@@ -1,7 +1,7 @@
 import {
     json
 } from "@sveltejs/kit";
-import * as fetch from "$lib/fetch";
+import * as fetch from "$lib/backend";
 import type {
     RequestHandler
 } from "./$types";

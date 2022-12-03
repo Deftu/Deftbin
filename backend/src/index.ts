@@ -41,8 +41,9 @@ const handler = new DocumentHandler(
 );
 
 // Setup Express the middleware
-app.use(cors());
-app.use(express.raw());
+app.use(cors({
+    credentials: true
+}));
 app.use(express.json());
 app.use(session({
     secret: config.authentication.sessionSecret,
@@ -112,6 +113,17 @@ if (config.authentication.types.includes(AuthType.GitHub)) {
     const githubAuth = new github();
     githubAuth.setup(app, router);
 }
+
+router.get("/status", (req, res) => {
+    if (req.user) {
+        res.json({
+            "authenticated": true,
+            "user": req.user
+        });
+    } else res.json({
+        "authenticated": false
+    });
+});
 
 app.use("/auth", router);
 

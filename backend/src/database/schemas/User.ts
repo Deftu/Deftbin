@@ -1,25 +1,25 @@
-import mongoose, {
+import {
     Schema,
     SchemaTypes
 } from "mongoose";
+import authConnection from "../auth";
 
-// ID is auto-generated
 export interface User {
     id: string;
     username: string;
-    password: string;
-    email: string;
+    avatar: string;
     connections: {
+        website: {
+            url: string;
+        };
         discord: {
             id: string;
             username: string;
             discriminator: string;
-            refreshToken: string;
         };
         github: {
             id: string;
             username: string;
-            refreshToken: string;
         };
     };
 };
@@ -34,14 +34,15 @@ const UserSchema = new Schema<User>({
         type: SchemaTypes.String,
         required: true
     },
-    password: {
-        type: SchemaTypes.String
-    },
-    email: {
+    avatar: {
         type: SchemaTypes.String,
-        required: true
     },
     connections: {
+        website: {
+            url: {
+                type: SchemaTypes.String
+            }
+        },
         discord: {
             id: {
                 type: SchemaTypes.String
@@ -62,12 +63,9 @@ const UserSchema = new Schema<User>({
             },
             username: {
                 type: SchemaTypes.String
-            },
-            refreshToken: {
-                type: SchemaTypes.String
             }
         }
     }
 });
 
-export default mongoose.model<User>("users", UserSchema, "auth");
+export default authConnection.model<User>("users", UserSchema, "auth");

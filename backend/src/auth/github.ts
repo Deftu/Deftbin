@@ -58,8 +58,7 @@ passport.use(new GitHubStrategy({
                     connections: {
                         github: {
                             id: githubId,
-                            username: profile.username,
-                            refreshToken: refreshToken
+                            username: profile.username
                         }
                     }
                 }
@@ -79,8 +78,7 @@ passport.use(new GitHubStrategy({
             connections: {
                 github: {
                     id: githubId,
-                    username: profile.username,
-                    refreshToken: refreshToken
+                    username: profile.username
                 }
             }
         });
