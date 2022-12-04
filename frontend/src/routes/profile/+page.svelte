@@ -18,12 +18,12 @@
         browser
     } from "$app/environment";
 
+    import LinkIcon from "$lib/icons/LinkIcon.svelte";
     import DiscordIcon from "$lib/icons/DiscordIcon.svelte";
     import GitHubIcon from "$lib/icons/GitHubIcon.svelte";
 
     const profile: UserProfile | null = $page.data.props.profile;
     if (browser && !profile) goto("/");
-    console.log("Profile: ", profile);
 
     onMount(() => {
         loading.set(false);
@@ -55,10 +55,16 @@
                 </div>
             </div>
             <div class="connections-container">
+                {#if profile?.connections?.website}
+                <div class="connection">
+                    <LinkIcon class="connection-icon" />
+                    <a href={profile?.connections?.website?.url}>{profile?.connections?.website?.url}</a>
+                </div>
+                {/if}
                 {#if profile?.connections?.discord}
                 <div class="connection">
                     <DiscordIcon class="connection-icon" />
-                    <p>{profile?.connections?.discord?.username}</p>
+                    <p>{profile?.connections?.discord?.username}#{profile?.connections?.discord?.discriminator}</p>
                 </div>
                 {/if}
                 {#if profile?.connections?.github}
@@ -177,7 +183,7 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        padding: 0 5%;
+        padding: 0 10%;
         justify-content: center;
         margin-top: 10px;
         gap: 10px;

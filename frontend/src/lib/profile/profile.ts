@@ -30,7 +30,7 @@ let attempted = false;
 export async function loadProfile(sessionId: string) {
     try {
         // axios
-        const response = await fetchBackend("auth/status", {
+        const response = await fetchBackend("auth", {
             headers: {
                 Cookie: `connect.sid=${sessionId}`
             }
