@@ -1,16 +1,22 @@
 import {
     Document as DocumentSchema,
-    DocumentItem,
-    UserItem
+    DocumentItem
 } from "$db/schemas";
 import KeyGenerator from "$key";
+import {
+    Express
+} from "express";
 import {
     Connection
 } from "mongoose";
 import * as id from "$utils/id";
 
 type DocumentCreateOptions = {
-    user?: UserItem | null
+    user?: Express.User | null
+}
+
+type DocumentUpdateOptions = {
+    user: Express.User
 }
 
 class DocumentStore {
@@ -27,7 +33,7 @@ class DocumentStore {
         });
     }
 
-    async create(document: DocumentItem): Promise<string> {
+    async create(document: DocumentItem, options: DocumentCreateOptions): Promise<string> {
         let key = this.keyGenerator.generateKey(this.keyLength);
         while (await this.findDocument(key)) {
             key = this.keyGenerator.generateKey(this.keyLength);
@@ -35,6 +41,7 @@ class DocumentStore {
 
         document.key = key;
         document.createdAt = new Date();
+        document.owner = options.user ? options.user["id"] : null;
         await DocumentSchema.create(document);
 
         return key;
@@ -55,16 +62,19 @@ class DocumentStore {
         return true;
     }
 
-    async update(key: string, document: DocumentItem): Promise<boolean> {
+    async update(key: string, document: DocumentItem, options: DocumentUpdateOptions): Promise<boolean> {
         const existingDocument = await this.findDocument(key);
         if (!existingDocument) return false;
 
         const edits = [
             {
                 id: id.generateId(),
+                name: existingDocument.name,
+                language: existingDocument.language,
                 content: existingDocument.content,
+                user: options.user["id"],
                 timestamp: new Date()
-            }, ...(document.edits || [])
+            }, ...(existingDocument.edits || [])
         ];
 
         const existingObject = {
@@ -78,12 +88,18 @@ class DocumentStore {
             edits: edits
         };
 
+        const newObject = {
+            ...existingObject,
+            name: document.name,
+            language: document.language,
+            content: document.content
+        };
+
         await DocumentSchema.updateOne({
             key: key
         }, {
             $set: {
-                ...existingObject,
-                ...document,
+                ...newObject,
                 edits
             }
         }, {
@@ -110,8 +126,8 @@ export default class DocumentHandler {
         );
     }
 
-    public async create(document: DocumentItem): Promise<string> {
-        return this.store.create(document);
+    public async create(document: DocumentItem, options: DocumentCreateOptions): Promise<string> {
+        return this.store.create(document, options);
     }
 
     public async get(key: string): Promise<DocumentItem | null> {
@@ -122,7 +138,7 @@ export default class DocumentHandler {
         return this.store.delete(key);
     }
 
-    public async update(key: string, document: DocumentItem): Promise<boolean> {
-        return this.store.update(key, document);
+    public async update(key: string, document: DocumentItem, options: DocumentUpdateOptions): Promise<boolean> {
+        return this.store.update(key, document, options);
     }
 }

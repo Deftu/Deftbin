@@ -15,22 +15,6 @@ import {
 } from "$db/schemas";
 import * as id from "$utils/id";
 
-passport.serializeUser((user: any, done) => {
-    return done(null, user.id);
-});
-
-passport.deserializeUser(async (id: string, done) => {
-    try {
-        const user = await User.findOne({
-            id: id
-        });
-        return user ? done(null, user) : done(null, null);
-    } catch (err) {
-        console.log(err);
-        return done(err, null);
-    }
-});
-
 passport.use(new GitHubStrategy({
     clientID: config.authentication.github.clientId,
     clientSecret: config.authentication.github.clientSecret,
@@ -58,6 +42,8 @@ passport.use(new GitHubStrategy({
             {
                 $set: {
                     email: profile.emails?.[0].value,
+                    avatar: profile.photos?.[0].value,
+                    username: profile.username,
                     "connections.github": {
                         id: githubId,
                         username: profile.username,
@@ -65,9 +51,7 @@ passport.use(new GitHubStrategy({
                 }
             },
             {
-                upsert: true,
-                new: true,
-                overwrite: false
+                new: true
             }
         );
         if (existingUser) return done(null, existingUser);
@@ -77,6 +61,7 @@ passport.use(new GitHubStrategy({
         const newUser = await User.create({
             id: userId,
             username: profile.username,
+            avatar: profile.photos?.[0].value,
             email: profile.emails?.[0].value,
             connections: {
                 github: {

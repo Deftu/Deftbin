@@ -19,20 +19,13 @@ type Config = {
     database: {
         host: string;
         port: number;
-        user: string;
-        password: string;
     };
     keyLength: number;
     keyGenerator: {
         type: string;
         options: any;
     };
-    store: {
-        database: string;
-        options: any;
-    };
     authentication: {
-        database: string;
         types: AuthType[];
         sessionSecret: string;
         discord: {
@@ -57,21 +50,14 @@ const defaultConfig: Config = {
     },
     database: {
         host: process.env.DATABASE_HOST || "localhost",
-        port: parseInt(process.env.DATABASE_PORT || "5432"),
-        user: process.env.DATABASE_USER || "postgres",
-        password: process.env.DATABASE_PASSWORD || ""
+        port: parseInt(process.env.DATABASE_PORT || "5432")
     },
     keyLength: parseInt(process.env.KEY_LENGTH || "10"),
     keyGenerator: {
         type: process.env.KEY_GENERATOR_TYPE || "phonetic",
         options: {}
     },
-    store: {
-        database: process.env.STORE_DATABASE || "documents",
-        options: {}
-    },
     authentication: {
-        database: process.env.AUTHENTICATION_DATABASE || "authentication",
         types: process.env.AUTHENTICATION_TYPES?.split(",")?.map((type) => type as AuthType) || [],
         sessionSecret: process.env.SESSSION_SECRET || "",
         discord: {
@@ -112,10 +98,6 @@ function initializeConfig(): Config {
             keyGenerator: {
                 ...defaultConfig.keyGenerator,
                 ...config.keyGenerator
-            },
-            store: {
-                ...defaultConfig.store,
-                ...config.store
             },
             authentication: {
                 ...defaultConfig.authentication,

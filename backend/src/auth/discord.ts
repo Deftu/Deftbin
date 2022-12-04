@@ -15,22 +15,12 @@ import {
 } from "$db/schemas";
 import * as id from "$utils/id";
 
-passport.serializeUser((user: any, done) => {
-    return done(null, user.id);
-});
-
-
-passport.deserializeUser(async (id: string, done) => {
-    try {
-        const user = await User.findOne({
-            id: id
-        });
-        return user ? done(null, user) : done(null, null);
-    } catch (err) {
-        console.log(err);
-        return done(err, null);
-    }
-});
+function makeAvatarUrl(
+    id: string,
+    hash: string
+) {
+    return `https://cdn.discordapp.com/avatars/${id}/${hash}.png`;
+}
 
 passport.use(new DiscordStrategy({
     clientID: config.authentication.discord.clientId,
@@ -62,7 +52,7 @@ passport.use(new DiscordStrategy({
             {
                 $set: {
                     email: profile.email,
-                    avatar: profile.avatar,
+                    avatar: makeAvatarUrl(profile.id, profile.avatar),
                     connections: {
                         discord: {
                             id: profile.id,
@@ -77,9 +67,7 @@ passport.use(new DiscordStrategy({
                 }
             },
             {
-                upsert: true,
-                new: true,
-                overwrite: false
+                new: true
             }
         );
         if (existingUser) return done(null, existingUser);
@@ -90,6 +78,7 @@ passport.use(new DiscordStrategy({
             id: userId,
             email: profile.email,
             username: profile.username,
+            avatar: makeAvatarUrl(profile.id, profile.avatar),
             connections: {
                 discord: {
                     id: profile.id,

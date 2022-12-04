@@ -19,7 +19,7 @@ defaultRouter.post("/create", async (req, res) => {
     const {
         email,
         username,
-        password,
+        password
     } = req.body;
 
     if (!email || !username || !password) return res.status(400).json({

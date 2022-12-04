@@ -17,7 +17,10 @@ export type DocumentRemoval = {
 };
 
 export type DocumentEdit = {
+    name: string;
+    language: string;
     content: string;
+    user: string;
     timestamp: Date;
 };
 
@@ -49,7 +52,16 @@ const DocumentRemovalSchema = new Schema({
 });
 
 const DocumentEditSchema = new Schema({
+    name: {
+        type: SchemaTypes.String
+    },
+    language: {
+        type: SchemaTypes.String
+    },
     content: {
+        type: SchemaTypes.String
+    },
+    user: {
         type: SchemaTypes.String,
         required: true
     },

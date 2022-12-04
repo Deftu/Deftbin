@@ -3,6 +3,9 @@ import cors from "cors";
 import session from "express-session";
 import passport from "passport";
 import store from "connect-mongo";
+import {
+    User
+} from "$db/schemas";
 
 import config from "$config";
 
@@ -29,6 +32,22 @@ export default function createApp() {
     }));
     app.use(passport.initialize());
     app.use(passport.session());
+
+    passport.serializeUser((user: any, done) => {
+        done(null, user.id);
+    });
+
+    passport.deserializeUser(async (id: string, done) => {
+        try {
+            const user = await User.findOne({
+                id: id
+            });
+            return user ? done(null, user) : done(null, null);
+        } catch (err) {
+            console.log(err);
+            done(err, null);
+        }
+    });
 
     return app;
 }

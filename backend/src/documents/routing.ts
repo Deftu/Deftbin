@@ -1,128 +1,116 @@
+import config from "$config";
+import DocumentHandler from "$documents/handler";
+import documentConnection from "$db/document";
 import {
-    Document as DocumentSchema,
-    DocumentItem,
-    UserItem
-} from "$db/schemas";
-import KeyGenerator from "$key";
-import {
-    Connection
-} from "mongoose";
-import * as id from "$utils/id";
+    Router
+} from "express";
 
-type DocumentCreateOptions = {
-    user?: UserItem | null
-}
+const keyGenerator = require(`../key/${config.keyGenerator.type}`).default;
+const keyGenInstance = new keyGenerator(config.keyGenerator.options);
+const documentHandler = new DocumentHandler(
+    keyGenInstance,
+    config.keyLength,
+    documentConnection
+);
 
-class DocumentStore {
-    constructor(
-        private keyGenerator: KeyGenerator,
-        private keyLength: number,
-        private connection: Connection
-    ) {
-    }
+const documentRouter = Router();
 
-    private async findDocument(key: string): Promise<DocumentItem | null> {
-        return await DocumentSchema.findOne({
-            key: key
+documentRouter.get("/key/:key", async (req, res) => {
+    const key = req.params.key;
+    const document = await documentHandler.get(key);
+    if (!document) {
+        res.status(404).json({
+            "error": "Document not found"
         });
+    } else res.json({
+        "key": document.key,
+        "name": document.name,
+        "language": document.language,
+        "content": document.content,
+        "owner": document.owner,
+        "createdAt": document.createdAt,
+        "removal": document.removal,
+        "edits": document.edits
+    });
+});
+
+documentRouter.post("/new", async (req, res) => {
+    const document = req.body;
+    if (!document.content) {
+        res.status(400).json({
+            "error": "Document content is required"
+        });
+
+        return;
     }
 
-    async create(document: DocumentItem): Promise<string> {
-        let key = this.keyGenerator.generateKey(this.keyLength);
-        while (await this.findDocument(key)) {
-            key = this.keyGenerator.generateKey(this.keyLength);
-        }
+    const key = await documentHandler.create(document, {
+        user: req.user
+    });
+    res.status(201).json({
+        "key": key
+    });
+});
 
-        document.key = key;
-        document.createdAt = new Date();
-        await DocumentSchema.create(document);
+documentRouter.delete("/delete/:key", async (req, res) => {
+    const key = req.params.key;
+    const document = await documentHandler.get(key);
+    if (document) {
+        // check auth
+        if (req.user) {
+            // check if the user is the owner or if the user is an admin or moderator
+            if (req.user["id"] !== document.owner && req.user["role"] == "moderation" && req.user["role"] == "admin") {
+                res.status(403).json({
+                    "error": "You do not have permission to delete this document"
+                });
 
-        return key;
-    }
-
-    async get(key: string): Promise<DocumentItem | null> {
-        return await this.findDocument(key);
-    }
-
-    async delete(key: string): Promise<boolean> {
-        const document = await this.findDocument(key);
-        if (!document) return false;
-
-        await DocumentSchema.deleteOne({
-            key: key
-        }).exec();
-
-        return true;
-    }
-
-    async update(key: string, document: DocumentItem): Promise<boolean> {
-        const existingDocument = await this.findDocument(key);
-        if (!existingDocument) return false;
-
-        const edits = [
-            {
-                id: id.generateId(),
-                content: existingDocument.content,
-                timestamp: new Date()
-            }, ...(document.edits || [])
-        ];
-
-        const existingObject = {
-            key: key,
-            name: existingDocument.name,
-            language: existingDocument.language,
-            content: existingDocument.content,
-            owner: existingDocument.owner,
-            createdAt: existingDocument.createdAt,
-            removal: existingDocument.removal,
-            edits: edits
-        };
-
-        await DocumentSchema.updateOne({
-            key: key
-        }, {
-            $set: {
-                ...existingObject,
-                ...document,
-                edits
+                return;
             }
-        }, {
-            upsert: true,
-            new: true
-        }).exec();
 
-        return true;
-    }
-}
+            await documentHandler.delete(key);
+            res.status(204).send();
+        } else res.status(401).json({
+            "error": "Unauthorized"
+        });
+    } else res.status(404).json({
+        "error": "Document not found"
+    });
+});
 
-export default class DocumentHandler {
-    private readonly store: DocumentStore;
+documentRouter.put("/edit/:key", async (req, res) => {
+    const key = req.params.key;
+    const document = await documentHandler.get(key);
+    if (document) {
+        // check auth
+        if (req.user) {
+            // check if the user is the owner or if the user is an admin or moderator
+            if (req.user["id"] !== document.owner && req.user["role"] == "moderation" && req.user["role"] == "admin") {
+                res.status(403).json({
+                    "error": "You do not have permission to edit this document"
+                });
 
-    constructor(
-        keyGenerator: KeyGenerator,
-        keyLength: number,
-        connection: Connection
-    ) {
-        this.store = new DocumentStore(
-            keyGenerator,
-            keyLength,
-            connection
-        );
-    }
+                return;
+            }
 
-    public async create(document: DocumentItem): Promise<string> {
-        return this.store.create(document);
-    }
+            const edit = req.body;
+            if (!edit.content) {
+                res.status(400).json({
+                    "error": "Document content is required"
+                });
 
-    public async get(key: string): Promise<DocumentItem | null> {
-        return this.store.get(key);
-    }
+                return;
+            }
 
-    public async delete(key: string): Promise<boolean> {
-        return this.store.delete(key);
-    }
+            await documentHandler.update(key, edit, {
+                user: req.user
+            });
+            res.status(204).send();
+        } else res.status(401).json({
+            "error": "Unauthorized"
+        });
+    } else res.status(404).json({
+        "error": "Document not found"
+    });
+});
 
-    public async update(key: string, document: DocumentItem): Promise<boolean> {
-        return this.store.update(key, document);
-    }
-}
+export default documentRouter;
