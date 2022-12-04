@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import KeyGenerator from "../keygen";
+import KeyGenerator from "$key";
 
 export type DictionaryOptions = {
     path: string;

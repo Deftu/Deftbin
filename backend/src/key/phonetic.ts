@@ -1,4 +1,4 @@
-import KeyGenerator from "../keygen";
+import KeyGenerator from "$key";
 
 export default class PhoneticKeyGenerator implements KeyGenerator {
     private readonly vowels: string = "aeiouy";

@@ -1,5 +1,4 @@
-import AuthHandler from "../auth";
-import config from "../config";
+import config from "$config";
 import passport from "passport";
 import {
     Strategy as GitHubStrategy,
@@ -9,29 +8,12 @@ import {
     VerifyCallback
 } from "passport-oauth2";
 import {
-    Express,
     Router
 } from "express";
 import {
     User
-} from "../database/schemas";
-import * as utils from "../utils";
-
-passport.serializeUser((user: any, done) => {
-    return done(null, user.id);
-});
-
-passport.deserializeUser(async (id: string, done) => {
-    try {
-        const user = await User.findOne({
-            id: id
-        });
-        return user ? done(null, user) : done(null, null);
-    } catch (err) {
-        console.log(err);
-        return done(err, null);
-    }
-});
+} from "$db/schemas";
+import * as id from "$utils/id";
 
 passport.use(new GitHubStrategy({
     clientID: config.authentication.github.clientId,
@@ -51,15 +33,20 @@ passport.use(new GitHubStrategy({
         // find existing user with github id
         const existingUser = await User.findOneAndUpdate(
             {
-                "connections.github.id": githubId
+                $or: [{
+                    "connections.github.id": githubId
+                }, {
+                    email: profile.emails?.[0].value
+                }]
             },
             {
                 $set: {
-                    connections: {
-                        github: {
-                            id: githubId,
-                            username: profile.username
-                        }
+                    email: profile.emails?.[0].value,
+                    avatar: profile.photos?.[0].value,
+                    username: profile.username,
+                    "connections.github": {
+                        id: githubId,
+                        username: profile.username,
                     }
                 }
             },
@@ -70,10 +57,11 @@ passport.use(new GitHubStrategy({
         if (existingUser) return done(null, existingUser);
 
         // create new user
-        const userId = utils.generateUserId();
+        const userId = id.generateId();
         const newUser = await User.create({
             id: userId,
             username: profile.username,
+            avatar: profile.photos?.[0].value,
             email: profile.emails?.[0].value,
             connections: {
                 github: {
@@ -90,16 +78,16 @@ passport.use(new GitHubStrategy({
     }
 }));
 
-export default class GitHubAuthHandler implements AuthHandler {
-    setup(express: Express, router: Router) {
-        router.get("/github", passport.authenticate("github"), (req, res) => {
-            res.sendStatus(200);
-        });
+const githubRouter = Router();
 
-        router.get("/github/redirect", passport.authenticate("github", {
-            failureRedirect: "/auth/github"
-        }), (req, res) => {
-            res.redirect(config.frontend.host + (config.frontend.port ? `:${config.frontend.port}` : "") + "/profile");
-        });
-    }
-}
+githubRouter.get("/", passport.authenticate("github"), (req, res) => {
+    res.sendStatus(200);
+});
+
+githubRouter.get("/redirect", passport.authenticate("github", {
+    failureRedirect: "/auth/github"
+}), (req, res) => {
+    res.redirect(config.frontend.host + (config.frontend.port ? `:${config.frontend.port}` : "") + "/profile");
+});
+
+export default githubRouter;

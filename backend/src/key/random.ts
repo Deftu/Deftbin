@@ -1,4 +1,4 @@
-import KeyGenerator from "../keygen";
+import KeyGenerator from "$key";
 
 export type RandomOptions = {
     characters: string;
