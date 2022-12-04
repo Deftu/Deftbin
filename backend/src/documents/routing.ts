@@ -113,4 +113,19 @@ documentRouter.put("/edit/:key", async (req, res) => {
     });
 });
 
+documentRouter.get("/user/:id", async (req, res) => {
+    const id = req.params.id;
+    const documents = await documentHandler.getByUser(id);
+    res.json(documents.map(document => ({
+        "key": document.key,
+        "name": document.name,
+        "language": document.language,
+        "content": document.content,
+        "owner": document.owner,
+        "createdAt": document.createdAt,
+        "removal": document.removal,
+        "edits": document.edits
+    })));
+});
+
 export default documentRouter;
