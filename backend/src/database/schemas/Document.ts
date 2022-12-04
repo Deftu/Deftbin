@@ -2,7 +2,7 @@ import {
     Schema,
     SchemaTypes
 } from "mongoose";
-import documentConnection from "../document";
+import documentConnection from "$db/document";
 
 export enum DocumentRemoveType {
     DELETE = "delete",
@@ -10,26 +10,57 @@ export enum DocumentRemoveType {
     SPAM = "spam"
 };
 
+export type DocumentRemoval = {
+    type: DocumentRemoveType;
+    reason: string;
+    timestamp: Date;
+};
+
+export type DocumentEdit = {
+    content: string;
+    timestamp: Date;
+};
+
 export interface Document {
-    id: string;
+    key: string;
     name: string;
     language: string;
     content: string;
-    owner: string;
+    owner?: string | null;
     createdAt: Date;
-    remove: {
-        type: DocumentRemoveType;
-        reason: string;
-    };
-    edits: {
-        id: string;
-        content: string;
-        timestamp: Date;
-    }[];
+    removal?: DocumentRemoval | null;
+    edits?: (DocumentEdit | null)[];
 };
 
+const DocumentRemovalSchema = new Schema({
+    type: {
+        type: SchemaTypes.String,
+        enum: Object.values(DocumentRemoveType),
+        required: true
+    },
+    reason: {
+        type: SchemaTypes.String,
+        required: true
+    },
+    timestamp: {
+        type: SchemaTypes.Date,
+        required: true
+    }
+});
+
+const DocumentEditSchema = new Schema({
+    content: {
+        type: SchemaTypes.String,
+        required: true
+    },
+    timestamp: {
+        type: SchemaTypes.Date,
+        required: true
+    }
+});
+
 const DocumentSchema = new Schema<Document>({
-    id: {
+    key: {
         type: SchemaTypes.String,
         required: true,
         unique: true
@@ -51,30 +82,11 @@ const DocumentSchema = new Schema<Document>({
         type: SchemaTypes.Date,
         required: true
     },
-    remove: {
-        type: {
-            type: SchemaTypes.String,
-            required: true
-        },
-        reason: {
-            type: SchemaTypes.String,
-            required: true
-        }
+    removal: {
+        type: DocumentRemovalSchema
     },
     edits: {
-        id: {
-            type: SchemaTypes.String,
-            required: true,
-            unique: true
-        },
-        content: {
-            type: SchemaTypes.String,
-            required: true
-        },
-        timestamp: {
-            type: SchemaTypes.Date,
-            required: true
-        }
+        type: [DocumentEditSchema]
     }
 });
 

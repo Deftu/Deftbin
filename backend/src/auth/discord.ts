@@ -1,5 +1,4 @@
-import AuthHandler from "../auth";
-import config from "../config";
+import config from "$config";
 import passport from "passport";
 import {
     Strategy as DiscordStrategy,
@@ -9,13 +8,12 @@ import {
     VerifyCallback
 } from "passport-oauth2";
 import {
-    Express,
     Router
 } from "express";
 import {
     User
-} from "../database/schemas";
-import * as utils from "../utils";
+} from "$db/schemas";
+import * as id from "$utils/id";
 
 passport.serializeUser((user: any, done) => {
     return done(null, user.id);
@@ -27,7 +25,6 @@ passport.deserializeUser(async (id: string, done) => {
         const user = await User.findOne({
             id: id
         });
-        console.log("Deserialized user", user);
         return user ? done(null, user) : done(null, null);
     } catch (err) {
         console.log(err);
@@ -53,17 +50,18 @@ passport.use(new DiscordStrategy({
         // update existing user's data with new data
         const existingUser = await User.findOneAndUpdate(
             {
-                $or: [
-                    {
-                        "connections.discord.id": profile.id
-                    },
-                    {
-                        "connections.github.id": github?.id
-                    }
-                ]
+                $or: [{
+                    "connections.discord.id": profile.id
+                },
+                {
+                    "connections.github.id": github?.id
+                }, {
+                    email: profile.email
+                }]
             },
             {
                 $set: {
+                    email: profile.email,
                     avatar: profile.avatar,
                     connections: {
                         discord: {
@@ -78,14 +76,19 @@ passport.use(new DiscordStrategy({
                     }
                 }
             },
-            { new: true }
+            {
+                upsert: true,
+                new: true,
+                overwrite: false
+            }
         );
         if (existingUser) return done(null, existingUser);
 
-        let userId = utils.generateUserId();
+        let userId = id.generateId();
         const newUser = new User({
             // generate an ID for the user
             id: userId,
+            email: profile.email,
             username: profile.username,
             connections: {
                 discord: {
@@ -107,16 +110,16 @@ passport.use(new DiscordStrategy({
     }
 }));
 
-export default class DiscordAuthHandler implements AuthHandler {
-    setup(express: Express, router: Router) {
-        router.get("/discord", passport.authenticate("discord"), (req, res) => {
-            res.sendStatus(200);
-        });
+const discordRouter = Router();
 
-        router.get("/discord/redirect", passport.authenticate("discord", {
-            failureRedirect: "/auth/discord"
-        }), (req, res) => {
-            res.redirect(config.frontend.host + (config.frontend.port ? `:${config.frontend.port}` : "") + "/profile");
-        });
-    }
-}
+discordRouter.get("/", passport.authenticate("discord"), (req, res) => {
+    res.sendStatus(200);
+});
+
+discordRouter.get("/redirect", passport.authenticate("discord", {
+    failureRedirect: "/auth/discord"
+}), (req, res) => {
+    res.redirect(config.frontend.host + (config.frontend.port ? `:${config.frontend.port}` : "") + "/profile");
+});
+
+export default discordRouter;

@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "$auth": ["./src/auth"],
+            "$auth/*": ["./src/auth/*"],
+            "$db": ["./src/database"],
+            "$db/*": ["./src/database/*"],
+            "$documents": ["./src/documents"],
+            "$documents/*": ["./src/documents/*"],
+            "$init": ["./src/init"],
+            "$init/*": ["./src/init/*"],
+            "$key": ["./src/key"],
+            "$key/*": ["./src/key/*"],
+            "$types": ["./src/types"],
+            "$types/*": ["./src/types/*"],
+            "$utils": ["./src/utils"],
+            "$utils/*": ["./src/utils/*"],
+            "$config": ["./src/config"]
+        },
+        "moduleResolution": "node",
+        "module": "CommonJS",
+        "target": "ES6",
+        "esModuleInterop": true,
+        "strict": false,
+        "allowJs": true
+    },
+    "exclude": [
+        "./node_modules",
+    ]
+}
