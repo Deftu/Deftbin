@@ -109,6 +109,12 @@ class DocumentStore {
 
         return true;
     }
+
+    async getByUser(id: string): Promise<DocumentItem[]> {
+        return await DocumentSchema.find({
+            owner: id
+        });
+    }
 }
 
 export default class DocumentHandler {
@@ -140,5 +146,9 @@ export default class DocumentHandler {
 
     public async update(key: string, document: DocumentItem, options: DocumentUpdateOptions): Promise<boolean> {
         return this.store.update(key, document, options);
+    }
+
+    public async getByUser(id: string): Promise<DocumentItem[]> {
+        return this.store.getByUser(id);
     }
 }
