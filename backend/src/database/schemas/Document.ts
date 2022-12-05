@@ -32,7 +32,7 @@ export interface Document {
     owner?: string | null;
     createdAt: Date;
     removal?: DocumentRemoval | null;
-    edits?: (DocumentEdit | null)[];
+    edits?: DocumentEdit[];
 };
 
 const DocumentRemovalSchema = new Schema({
@@ -95,7 +95,7 @@ const DocumentSchema = new Schema<Document>({
         required: true
     },
     removal: {
-        type: DocumentRemovalSchema
+        type: DocumentRemovalSchema,
     },
     edits: {
         type: [DocumentEditSchema]
