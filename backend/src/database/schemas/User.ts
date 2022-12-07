@@ -10,28 +10,100 @@ export enum UserRole {
     User = "user"
 }
 
+export interface UserWebsiteConnection {
+    url: string;
+}
+
+export interface UserDiscordConnection {
+    id: string;
+    username: string;
+    discriminator: string;
+};
+
+export interface UserGitHubConnection {
+    id: string;
+    username: string;
+};
+
+export interface UserConnections {
+    website: UserWebsiteConnection;
+    discord: UserDiscordConnection;
+    github: UserGitHubConnection;
+};
+
+export interface UserMetadata {
+    avatar: string;
+    username: string;
+    pronouns: string;
+    description: string;
+    connections: UserConnections;
+};
+
 export interface User {
     id: string;
     role: UserRole;
     email: string;
     password: string;
-    username: string;
-    avatar: string;
-    connections: {
-        website: {
-            url: string;
-        };
-        discord: {
-            id: string;
-            username: string;
-            discriminator: string;
-        };
-        github: {
-            id: string;
-            username: string;
-        };
-    };
+    metadata: UserMetadata;
 };
+
+const UserWebsiteConnectionSchema = new Schema<UserWebsiteConnection>({
+    url: {
+        type: SchemaTypes.String
+    }
+});
+
+const UserDiscordConnectionSchema = new Schema<UserDiscordConnection>({
+    id: {
+        type: SchemaTypes.String
+    },
+    username: {
+        type: SchemaTypes.String
+    },
+    discriminator: {
+        type: SchemaTypes.String
+    }
+});
+
+const UserGitHubConnectionSchema = new Schema<UserGitHubConnection>({
+    id: {
+        type: SchemaTypes.String
+    },
+    username: {
+        type: SchemaTypes.String
+    }
+});
+
+const UserConnectionsSchema = new Schema<UserConnections>({
+    website: {
+        type: UserWebsiteConnectionSchema
+    },
+    discord: {
+        type: UserDiscordConnectionSchema
+    },
+    github: {
+        type: UserGitHubConnectionSchema
+    }
+});
+
+const UserMetadataSchema = new Schema<UserMetadata>({
+    avatar: {
+        type: SchemaTypes.String
+    },
+    username: {
+        type: SchemaTypes.String,
+        required: true
+    },
+    pronouns: {
+        type: SchemaTypes.String
+    },
+    description: {
+        type: SchemaTypes.String
+    },
+    connections: {
+        type: UserConnectionsSchema
+    }
+});
 
 const UserSchema = new Schema<User>({
     id: {
@@ -53,41 +125,8 @@ const UserSchema = new Schema<User>({
     password: {
         type: SchemaTypes.String
     },
-    username: {
-        type: SchemaTypes.String,
-        required: true
-    },
-    avatar: {
-        type: SchemaTypes.String,
-    },
-    connections: {
-        website: {
-            url: {
-                type: SchemaTypes.String
-            }
-        },
-        discord: {
-            id: {
-                type: SchemaTypes.String
-            },
-            username: {
-                type: SchemaTypes.String
-            },
-            discriminator: {
-                type: SchemaTypes.String
-            },
-            refreshToken: {
-                type: SchemaTypes.String
-            }
-        },
-        github: {
-            id: {
-                type: SchemaTypes.String
-            },
-            username: {
-                type: SchemaTypes.String
-            }
-        }
+    metadata: {
+        type: UserMetadataSchema
     }
 });
 
