@@ -1,13 +1,13 @@
 <script lang="ts">
     import {
         page
-    } from '$app/stores';
+    } from "$app/stores";
     import {
         onMount
-    } from 'svelte';
+    } from "svelte";
     import {
         loading
-    } from '$lib/loading';
+    } from "$lib/base/loading";
 
     const status = $page.status;
     const message = $page.error?.message || null;
@@ -24,6 +24,7 @@
         {#if message}
             <h2 class="error-message">{message}</h2>
         {/if}
+        {#if errMsg}
         <!-- Hides/shows the actual error's content -->
         <button class="error-toggle" on:click={() => document.querySelector(".error-content")?.classList?.toggle("hidden")}>
             <span class="error-toggle-text">Show error</span>
@@ -33,6 +34,7 @@
         <div class="error-content hidden">
             <pre class="error-stack">{errMsg}</pre>
         </div>
+        {/if}
         <a href="/" class="error-link">Go back home</a>
     </div>
 </div>

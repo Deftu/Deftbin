@@ -1,9 +1,12 @@
 <script lang="ts">
+    import "./hljs.css";
+
     import {
+        createEventDispatcher,
         onMount
     } from "svelte";
 
-    export let hljsLoadedCallback: ((this: HTMLScriptElement, ev: Event) => any) | null = null;
+    const dispatch = createEventDispatcher();
 
     onMount(() => {
         // load highlight.js
@@ -13,9 +16,7 @@
         document.head.append(script);
 
         script.onload = (event) => {
-            if (hljsLoadedCallback) {
-                hljsLoadedCallback.call(script, event);
-            }
+            dispatch("load");
         }
     });
 </script>

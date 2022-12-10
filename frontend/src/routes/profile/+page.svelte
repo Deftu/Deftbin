@@ -4,26 +4,28 @@
     } from "svelte";
     import {
         loading
-    } from "$lib/loading";
+    } from "$lib/base/loading";
     import type {
-        UserProfile
-    } from "$lib/profile/profile";
+        User,
+        Document
+    } from "$lib/user/user";
+    import {
+        browser
+    } from "$app/environment";
     import {
         page
     } from "$app/stores";
     import {
         goto
     } from "$app/navigation";
-    import {
-        browser
-    } from "$app/environment";
 
     import LinkIcon from "$lib/icons/LinkIcon.svelte";
     import DiscordIcon from "$lib/icons/DiscordIcon.svelte";
     import GitHubIcon from "$lib/icons/GitHubIcon.svelte";
 
-    const profile: UserProfile | null = $page.data.props.profile;
-    if (browser && !profile) goto("/");
+    const user: User = $page.data.props.user;
+    const documents: Document[] = $page.data.props.documents;
+    const sortedDocuments = browser ? documents.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()) : [];
 
     onMount(() => {
         loading.set(false);
@@ -31,7 +33,7 @@
 </script>
 
 <svelte:head>
-    <title>Deftbin - {profile?.username}'s profile</title>
+    <title>Deftbin - {user?.username}'s profile</title>
 </svelte:head>
 
 <div class="content">
@@ -39,43 +41,59 @@
         <div class="profile-view">
             <div class="identification-container">
                 <div class="avatar-container">
-                    <img src={profile?.avatar} alt="Avatar" />
+                    <img src={user?.avatar} alt="Avatar" />
                     <div class="avatar-background" />
                 </div>
-                <h1>{profile?.username}</h1>
+                <h1>{user?.username}</h1>
             </div>
             <div class="stats-container">
                 <div class="stat">
-                    <h2>{profile?.stats?.pastes || 0}</h2>
+                    <h2>{documents?.length || 0}</h2>
                     <p>Documents</p>
-                </div>
-                <div class="stat">
-                    <h2>{profile?.stats?.views || 0}</h2>
-                    <p>Views</p>
                 </div>
             </div>
             <div class="connections-container">
-                {#if profile?.connections?.website}
+                {#if user?.connections?.website}
                 <div class="connection">
                     <LinkIcon class="connection-icon" />
-                    <a href={profile?.connections?.website?.url}>{profile?.connections?.website?.url}</a>
+                    <a href={user?.connections?.website?.url}>{user?.connections?.website?.url}</a>
                 </div>
                 {/if}
-                {#if profile?.connections?.discord}
+                {#if user?.connections?.discord}
                 <div class="connection">
                     <DiscordIcon class="connection-icon" />
-                    <p>{profile?.connections?.discord?.username}#{profile?.connections?.discord?.discriminator}</p>
+                    <p>{user?.connections?.discord?.username}#{user?.connections?.discord?.discriminator}</p>
                 </div>
                 {/if}
-                {#if profile?.connections?.github}
+                {#if user?.connections?.github}
                 <div class="connection">
                     <GitHubIcon class="connection-icon" />
-                    <a href="https://github.com/{profile?.connections?.github?.username}">@{profile?.connections?.github?.username}</a>
+                    <a href="https://github.com/{user?.connections?.github?.username}">@{user?.connections?.github?.username}</a>
                 </div>
                 {/if}
             </div>
         </div>
-        <div class="document-view"></div>
+        <div class="document-view">
+            <h1>Documents</h1>
+            {#if documents?.length > 0}
+            <div class="documents-container">
+                {#each sortedDocuments as document}
+                <button class="document" on:click={() => goto(`/documents/${document.key}`)}>
+                    <h2>{document.name || document.key}</h2>
+                    <div class="document-language">
+                        {#if document.language}
+                        <p>{document.language}</p>
+                        {/if}
+                    </div>
+                </button>
+                {/each}
+            </div>
+            {:else}
+            <div class="no-documents">
+                <span>This user has no documents.</span>
+            </div>
+            {/if}
+        </div>
     </div>
 </div>
 
@@ -86,7 +104,7 @@
 
     .content {
         height: 100%;
-        padding: 35px;
+        padding: 25px;
     }
 
     .container {
@@ -207,7 +225,69 @@
         width: 100%;
         height: 100%;
         display: flex;
+        flex-direction: column;
+        background-color: var(--background-3);
+        border-radius: 25px;
+        margin-left: 50px;
+        overflow: hidden;
+    }
+
+    .document-view h1 {
+        /* top 35px, left 35px, bottom 25px, right 0px; */
+        margin: 35px 0 25px 35px;
+    }
+
+    .document-view h1::after {
+        content: "";
+        display: block;
+        width: calc(100% - 35px);
+        padding-bottom: 10px;
+        border-bottom: 5px solid var(--background-4);
+    }
+
+    .documents-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 0 35px 25px 35px;
+        gap: 25px;
+        overflow-y: scroll;
+    }
+
+    .document {
+        width: 100%;
+        min-height: 68px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        background-color: var(--background-2);
+        border: none;
+        border-radius: 25px;
+    }
+
+    .document h2 {
+        margin-left: 25px;
+    }
+
+    .document .document-language {
+
+    }
+
+    .no-documents {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
         align-items: center;
         justify-content: center;
+    }
+
+    .no-documents span {
+        font-size: 20px;
+        font-weight: 500;
     }
 </style>

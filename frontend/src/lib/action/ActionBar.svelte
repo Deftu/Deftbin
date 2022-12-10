@@ -1,5 +1,5 @@
 <script lang="ts">
-    import * as settings from "$lib/settings/settings";
+    import * as settings from "$lib/settings";
     import {
         onMount
     } from "svelte";

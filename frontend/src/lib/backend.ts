@@ -27,8 +27,7 @@ export function getBackendUrl(): string {
 export async function fetchBackend(path: string, options?: AxiosRequestConfig | undefined) {
     const url = getBackendUrl();
     const res = await axios.get(`${url}/${path}`, {
-        ...options,
-        withCredentials: true
+        ...options
     });
     return res;
 }

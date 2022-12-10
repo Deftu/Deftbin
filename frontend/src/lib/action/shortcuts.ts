@@ -1,7 +1,7 @@
 import {
     browser
 } from "$app/environment";
-import * as settings from "../settings/settings";
+import * as settings from "../settings";
 import * as actions from "./actions";
 
 export function initialize() {

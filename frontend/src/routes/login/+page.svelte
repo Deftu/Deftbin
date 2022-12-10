@@ -4,7 +4,7 @@
     } from "svelte";
     import {
         loading
-    } from "$lib/loading";
+    } from "$lib/base/loading";
 
     import DiscordIcon from "$lib/icons/DiscordIcon.svelte";
     import GitHubIcon from "$lib/icons/GitHubIcon.svelte";

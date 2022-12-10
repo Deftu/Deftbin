@@ -1,43 +1,20 @@
 <script lang="ts">
     import {
         loading
-    } from "$lib/loading";
+    } from "$lib/base/loading";
 
-	import * as settings from "$lib/settings/settings";
-    import Header from "$lib/nav/Header.svelte";
+    import {
+        Header,
+        Footer
+    } from "$lib/nav";
+    import Container from "$lib/base/Container.svelte";
+    import CodeInput from "$lib/code/CodeInput.svelte";
+
 	import {
 		onMount
 	} from "svelte";
-    import {
-        page
-    } from "$app/stores";
-	let content = $page.data?.props?.content || "";
 
 	onMount(() => {
-		// @ts-ignore
-		/*document.querySelector("textarea").addEventListener("keydown", (e) => {
-            if (e.key === "Tab" && !e.shiftKey) {
-				if (!e.ctrlKey) {
-					const appendage = settings.getSettings().tabType === "spaces" ? " ".repeat(settings.getSettings().tabSize) : "\t".repeat(settings.getSettings().tabSize / 4);
-
-					const start = e.target.selectionStart;
-					const end = e.target.selectionEnd;
-
-					e.target.value = e.target.value.substring(0, start) + appendage + e.target.value.substring(end);
-
-					e.target.selectionStart = e.target.selectionEnd = start + appendage.length;
-					e.preventDefault();
-				} else {
-					const elements = document.querySelectorAll("input, select, textarea, button, a");
-					const index = Array.prototype.indexOf.call(elements, e.target);
-					if (index > -1 && index < elements.length - 1) {
-						elements[index + 1].focus();
-                        e.preventDefault();
-					}
-				}
-            }
-        });*/
-
         loading.set(false);
 	});
 </script>
@@ -54,59 +31,16 @@
 </svelte:head>
 
 <Header />
-<!--<div class="container">
-	<div class="caret-container">></div>
-	<textarea spellcheck="false">{content}</textarea>
-</div>
-<ActionBar />-->
+<Container class="text-container" sidePadding>
+    <CodeInput />
+</Container>
+<Footer />
 
 <style>
-	.content {
-		display: flex;
-		flex-direction: row;
-		height: 100vh;
-		padding: 20px;
-	}
-
-	.container {
-		background-color: var(--background-2);
-		border-radius: 25px;
-		display: flex;
-		flex-direction: row;
-		flex: 1;
-	}
-
-	.caret-container {
-		--line-num-margin: 20px;
-		min-width: 20px;
-		height: fit-content;
-		max-height: calc(100% - var(--line-num-margin) * 2);
-		font-size: 15px;
-		font-family: monospace;
-		margin: var(--line-num-margin);
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		user-select: none;
-		line-height: 20px;
-		color: var(--text-faded);
-		text-align: center;
-		overflow: hidden
-	}
-
-	textarea {
-		width: 100%;
-		height: 100%;
-		padding: 20px;
-
-		border: none;
-		color: var(--text);
-		background: none;
-
-		font-family: monospace;
-		font-size: 15px;
-
-		resize: none;
-		outline: none;
-	}
+    :global(.text-container) {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        gap: 25px;
+    }
 </style>

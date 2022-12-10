@@ -1,7 +1,7 @@
 <script lang="ts">
     import {
         loading
-    } from "$lib/loading";
+    } from "$lib/base/loading";
 </script>
 
 {#if $loading}

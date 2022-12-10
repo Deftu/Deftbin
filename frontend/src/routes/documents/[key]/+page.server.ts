@@ -8,15 +8,16 @@ import type {
 } from "./$types";
 
 export const load: PageServerLoad = async ({
+    parent,
     params
 }) => {
     // get the key, and remove the file extension if it exists
     const key = params.key.replace(/\.[a-zA-Z0-9]+/gm, "");
     const fileExtension = params.key.match(/\.[a-zA-Z0-9]+/gm)?.[0] || "";
-    var res;
+    let res;
 
     try {
-        res = await fetch.fetchBackend(`documents/${key}`);
+        res = await fetch.fetchBackend(`documents/key/${key}`);
     } catch (err) {
         throw error(500, {
             message: "An error occurred while fetching the document",
@@ -28,12 +29,16 @@ export const load: PageServerLoad = async ({
         // redirect to base route
         throw redirect(302, "/");
     } else {
-        const document = await res.json();
+        const document = await res.data;
+        const {
+            props
+        } = await parent();
         return {
             props: {
                 document: document,
                 key: key,
-                ext: fileExtension?.includes(".") ? fileExtension : null
+                ext: fileExtension?.includes(".") ? fileExtension : null,
+                ...props
             }
         };
     }

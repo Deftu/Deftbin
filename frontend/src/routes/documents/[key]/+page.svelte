@@ -1,40 +1,24 @@
 <script lang="ts">
     import {
         loading
-    } from "$lib/loading";
+    } from "$lib/base/loading";
 
-	import * as settings from "$lib/settings/settings";
-	import HighlightJS from '$lib/code/HighlightJS.svelte';
-	import ActionBar from '$lib/action/ActionBar.svelte';
-    import CodeBlock from '$lib/code/CodeBlock.svelte';
-
+    import Header from "$lib/nav/Header.svelte";
+    import Container from "$lib/base/Container.svelte";
+    import Footer from "$lib/nav/Footer.svelte";
+    import CodeBlock from "$lib/code/CodeBlock.svelte";
+  	import {
+        onMount
+    } from "svelte";
     import {
-		initializeActionBar
-	} from "$lib/action/actions";
-  	import { onMount } from "svelte";
-  	import { error } from "@sveltejs/kit";
-  	import type {
-		PageData
-	} from "./$types";
+        page
+    } from "$app/stores";
 
-    export let data: PageData;
-
-    var title = "Deftbin";
-    const docTitle = data?.props?.document?.title || data.props?.key?.toUpperCase() || "";
+    let title = "Deftbin";
+    const docTitle = $page.data?.props?.document?.title || $page.data.props?.key || "";
     if (docTitle) title = `${title} - ${docTitle}`;
 
     onMount(() => {
-        initializeActionBar("copy-link", "copy", "duplicate", "raw");
-
-		const content = document.querySelector(".content");
-		if (!content) throw error(500, "Could not find content element!");
-		settings.positionContent(content as HTMLElement);
-		settings.setupTabSize(content as HTMLElement);
-
-		const container = document.querySelector(".container");
-		if (!container) throw error(500, "Could not find container element!");
-		settings.setupFancyLights(container as HTMLElement);
-
         loading.set(false);
     });
 </script>
@@ -52,29 +36,11 @@
     <meta property="og:description" content="Deftbin is a free, open-source pastebin alternative used to share code.">
 </svelte:head>
 
-<HighlightJS />
-<ActionBar />
-
-<div class="content">
-	<div class="container">
-        <CodeBlock language={data?.props?.ext?.replace(".", "") || data?.props?.document?.language} code={data.props?.document?.content || ""} />
-	</div>
-</div>
+<Header />
+<Container internalPadding sidePadding>
+    <CodeBlock language={$page.data?.props?.ext?.replace(".", "") || $page.data?.props?.document?.language} code={$page.data.props?.document?.content || ""} />
+</Container>
+<Footer />
 
 <style>
-	.content {
-		display: flex;
-		flex-direction: row;
-		height: 100vh;
-		padding: 20px;
-	}
-
-	.container {
-		background-color: var(--background-2);
-		border-radius: 25px;
-		display: flex;
-		flex-direction: row;
-		flex: 1;
-        max-width: 100%;
-	}
 </style>

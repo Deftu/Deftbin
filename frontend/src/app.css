@@ -1,9 +1,11 @@
 @import url("https://fonts.googleapis.com/css?family=Outfit");
 @import url("https://fonts.googleapis.com/css?family=Manrope");
+@import url("https://fonts.googleapis.com/css?family=JetBrains+Mono");
 
 html {
-	--action-bar-spacing: 20px;
-	--action-bar-height: 80px;
+    --code-font: "JetBrains Mono", monospace;
+    --code-size: 15px;
+    --code-height: 20px;
 
 	/* colours */
 	--primary: #C91212;
@@ -15,7 +17,10 @@ html {
 
 	--text: #FDFBF9;
 	--text-faded: #FDFBF980;
-    --text-disabled: #FDFBF919;
+    --text-disabled: #FDFBF932;
+
+    --state-on: #038700;
+    --state-off: #8C0317;
 
     --scrollbar-track: #1D1D20;
     --scrollbar-thumb: #C91212;
@@ -27,6 +32,11 @@ html, body, .svelte-body {
     margin: 0;
 }
 
+.svelte-body {
+    display: flex;
+    flex-direction: column;
+}
+
 @media (prefers-color-scheme: light) {
 	html {
 		--background-1: #DBD7D2;
@@ -36,7 +46,7 @@ html, body, .svelte-body {
 
 		--text: #28282B;
         --text-faded: #28282B80;
-        --text-disabled: #28282B19;
+        --text-disabled: #28282B32;
 
         --scrollbar-track: #F5EBE0;
 	}
@@ -50,12 +60,53 @@ html[data-theme="light"] {
 
     --text: #28282B;
     --text-faded: #28282B80;
-    --text-disabled: #28282B19;
+    --text-disabled: #28282B32;
 
     --scrollbar-track: #F5EBE0;
 }
 
-/* TODO - Other themes... */
+html[data-theme="synthwave84"] {
+    --background-1: #2A2139;
+    --background-2: #463465;
+    --background-3: #241B2F;
+    --background-4: #4D3B6B;
+
+    --scrollbar-track: #2A2139;
+}
+
+html[data-theme="onedarkpro"] {
+    --link: #26AFEA;
+    --background-1: #1D1F23;
+    --background-2: #282C34;
+    --background-3: #404754;
+    --background-4: #21252B;
+
+    --scrollbar-track: #1D1F23;
+}
+
+html[data-theme="nordpolarnight"] {
+    --link: #26AFEA;
+    --background-1: #2E3440;
+    --background-2: #3B4252;
+    --background-3: #434C5E;
+    --background-4: #4C566A;
+
+    --scrollbar-track: #2E3440;
+}
+
+html[data-theme="nordsnowstorm"] {
+    --link: #26AFEA;
+    --background-1: #D8DEE9;
+    --background-2: #E5E9F0;
+    --background-3: #ECEFF4;
+    --background-4: #FDFBF9;
+
+    --text: #28282B;
+    --text-faded: #28282B80;
+    --text-disabled: #28282B32;
+
+    --scrollbar-track: #D8DEE9;
+}
 
 * {
 	box-sizing: border-box;
@@ -103,9 +154,4 @@ a {
 
 .emphasized-text {
     font-weight: bold;
-}
-
-:focus {
-    outline: 2.5px solid var(--primary);
-    outline-offset: 2.5px;
 }

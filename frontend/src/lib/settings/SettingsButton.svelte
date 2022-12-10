@@ -1,4 +1,5 @@
 <script lang="ts">
+    import * as settings from "$lib/settings";
     import {
         browser
     } from "$app/environment";
@@ -9,6 +10,8 @@
 </script>
 
 <button class="settings-button" on:click={(event) => {
+    settings.toggleElement();
+    event.stopPropagation();
 }}>
     <CogIcon class="settings-icon" />
 </button>

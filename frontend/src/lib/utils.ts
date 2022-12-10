@@ -15,6 +15,7 @@ const aliases = {
     hs: "haskell",
     md: "markdown",
     kt: "kotlin",
+    cs: "csharp",
 };
 
 export function getLanguageFromExtension(extension: string): string | null {
@@ -23,7 +24,7 @@ export function getLanguageFromExtension(extension: string): string | null {
     const language = aliases[extension];
     if (language) return language;
 
-    return null;
+    return extension;
 }
 
 export function getExtensionFromLanguage(language: string): string | null {
@@ -32,5 +33,16 @@ export function getExtensionFromLanguage(language: string): string | null {
     const extension = Object.keys(aliases).find((key) => aliases[key] === language);
     if (extension) return extension;
 
-    return null;
+    return language;
+}
+
+export function getLineHeight(element: HTMLElement) {
+    const copy = element.cloneNode() as HTMLElement;
+    copy.style.visibility = "hidden";
+    copy.style.position = "absolute";
+    copy.textContent = "a";
+    element.parentNode?.append(copy);
+    const lineHeight = copy.offsetHeight;
+    element.parentNode?.removeChild(copy);
+    return lineHeight;
 }

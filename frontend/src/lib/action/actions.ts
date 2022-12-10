@@ -1,6 +1,6 @@
 import * as fetch from "$lib/backend";
 import * as utils from "$lib/utils";
-import * as notifications from "$lib/notifications/notifications";
+import * as notifications from "$lib/interactions/notifications";
 import {
     browser
 } from "$app/environment"

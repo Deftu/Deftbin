@@ -1,6 +1,8 @@
 import {
     browser
 } from "$app/environment";
+import SettingsButton from "$lib/settings/SettingsButton.svelte";
+import SettingsOverlay from "$lib/settings/SettingsOverlay.svelte";
 
 export enum ActionBarPos {
     Top = "top",
@@ -15,38 +17,29 @@ export function getActionBarPosFromValue(value: string): ActionBarPos {
 export enum Theme {
     Light = "light",
     Dark = "dark",
-    OneDarkPro = "onedarkpro",
     Synthwave84 = "synthwave84",
-    Monokai = "monokai",
-    CatppuccinLatte = "catppuccin-latte",
-    CatppuccinFrappe = "catppuccin-frappe",
-    CatppuccinMacchiato = "catppuccin-macchiato",
-    CatppuccinMocha = "catppuccin-mocha"
+    OneDarkPro = "onedarkpro",
+    NordPolarNight = "nordpolarnight",
+    NordSnowStorm = "nordsnowstorm",
 }
 
 export function getThemeFromValue(value: string): string {
     if (value === "light") return "Light";
     if (value === "dark") return "Dark";
-    if (value === "onedarkpro") return "OneDarkPro";
     if (value === "synthwave84") return "Synthwave84";
-    if (value === "monokai") return "Monokai";
-    if (value === "catppuccin-latte") return "CatppuccinLatte";
-    if (value === "catppuccin-frappe") return "CatppuccinFrappe";
-    if (value === "catppuccin-macchiato") return "CatppuccinMacchiato";
-    if (value === "catppuccin-mocha") return "CatppuccinMocha";
+    if (value === "onedarkpro") return "OneDarkPro";
+    if (value === "nordpolarnight") return "NordPolarNight";
+    if (value === "nordsnowstorm") return "NordSnowStorm";
     return "Dark";
 }
 
 export function getThemeFromName(name: string): string {
     if (name === "Light") return "light";
     if (name === "Dark") return "dark";
-    if (name === "OneDarkPro") return "onedarkpro";
     if (name === "Synthwave84") return "synthwave84";
-    if (name === "Monokai") return "monokai";
-    if (name === "CatppuccinLatte") return "catppuccin-latte";
-    if (name === "CatppuccinFrappe") return "catppuccin-frappe";
-    if (name === "CatppuccinMacchiato") return "catppuccin-macchiato";
-    if (name === "CatppuccinMocha") return "catppuccin-mocha";
+    if (name === "OneDarkPro") return "onedarkpro";
+    if (name === "NordPolarNight") return "nordpolarnight";
+    if (name === "NordSnowStorm") return "nordsnowstorm";
     return "dark";
 }
 
@@ -61,26 +54,34 @@ export function getTabTypeFromValue(value: string): TabType {
 }
 
 export interface Settings {
-    actionbarPosition: ActionBarPos;
     theme: Theme;
     lineNumbers: boolean;
     lineWrapping: boolean;
     tabSize: number;
     tabType: TabType;
-    actionShortcuts: boolean;
-    fancyLights: boolean;
 }
 
 export const defaultSettings: Settings = {
-    actionbarPosition: ActionBarPos.Bottom,
     theme: Theme.Dark,
     lineNumbers: true,
     lineWrapping: true,
     tabSize: 4,
-    tabType: TabType.Tabs,
-    actionShortcuts: true,
-    fancyLights: false
+    tabType: TabType.Tabs
 };
+
+export function toggleElement() {
+    const container = document.querySelector(".full-container");
+    if (container) {
+        // @ts-ignore
+        if (container.style.display === "none" || !container.style.display) {
+            // @ts-ignore
+            container.style.display = "block";
+        } else {
+            // @ts-ignore
+            container.style.display = "none";
+        }
+    }
+}
 
 export function loadSettings(): Settings {
     if (!browser) return defaultSettings;
@@ -105,14 +106,6 @@ export function getSettings(): Settings {
 export function saveSettings(settings: Settings) {
     if (!browser) return;
 
-    localStorage.setItem("settings", JSON.stringify(settings));
-}
-
-export function setActionbarPosition(position: ActionBarPos) {
-    if (!browser) return;
-
-    const settings = getSettings();
-    settings.actionbarPosition = position;
     localStorage.setItem("settings", JSON.stringify(settings));
 }
 
@@ -156,36 +149,6 @@ export function setTabType(tabType: TabType) {
     localStorage.setItem("settings", JSON.stringify(settings));
 }
 
-export function setActionShortcuts(actionShortcuts: boolean) {
-    if (!browser) return;
-
-    const settings = getSettings();
-    settings.actionShortcuts = actionShortcuts;
-    localStorage.setItem("settings", JSON.stringify(settings));
-}
-
-export function setFancyLights(fancyLights: boolean) {
-    if (!browser) return;
-
-    const settings = getSettings();
-    settings.fancyLights = fancyLights;
-    localStorage.setItem("settings", JSON.stringify(settings));
-}
-
-// Element utility nodes
-
-export function positionContent(target: HTMLElement) {
-    const actionBarPos = getSettings().actionbarPosition;
-	const calc = "calc(var(--action-bar-height) + var(--action-bar-spacing) * 2)";
-	if (actionBarPos === "top") {
-		target.style.paddingTop = calc;
-		target.style.paddingBottom = "20px";
-	} else if (actionBarPos === "bottom") {
-		target.style.paddingTop = "20px";
-		target.style.paddingBottom = calc;
-	}
-}
-
 export function setupTabSize(target: HTMLElement) {
     const tabSize = getSettings().tabSize;
     target.style.tabSize = tabSize.toString();
@@ -196,15 +159,7 @@ export function setupTabSize(target: HTMLElement) {
     }
 }
 
-export function setupFancyLights(target: HTMLElement) {
-    if (getSettings().fancyLights) {
-        target.classList.add("fancy-lights");
-    } else {
-        target.classList.remove("fancy-lights");
-    }
-}
-
-export function setupActionBarPos(target: HTMLElement) {
-    const actionBarPos = getSettings().actionbarPosition;
-    target.setAttribute("action-bar-pos", actionBarPos);
-}
+export {
+    SettingsButton,
+    SettingsOverlay
+};

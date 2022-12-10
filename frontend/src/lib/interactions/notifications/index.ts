@@ -1,4 +1,5 @@
-import Notification from "$lib/notifications/Notification.svelte"
+import Notification from "$lib/interactions/notifications/Notification.svelte"
+import NotificationContainer from "$lib/interactions/notifications/NotificationContainer.svelte"
 
 export enum NotificationType {
     Error = 'error',
@@ -39,3 +40,7 @@ function getNotificationContainer(): HTMLElement {
 
     return container as HTMLElement;
 }
+
+export {
+    NotificationContainer
+};

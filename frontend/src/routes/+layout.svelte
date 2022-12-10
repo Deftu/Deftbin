@@ -1,27 +1,17 @@
 <script>
     import {
+        LoadingOverlay,
         loading
-    } from '$lib/loading';
+    } from "$lib/base/loading";
     loading.set(true);
 
 	import "../app.css";
-	import * as settings from "$lib/settings/settings";
-
-	import {
-		onMount
-	} from "svelte";
-	import {
-		browser
-	} from "$app/environment"
-
-    import Notifications from "$lib/notifications/Notifications.svelte";
-    import Loading from "$lib/base/Loading.svelte";
-
-	onMount(() => {
-		if (browser) {
-			settings.loadSettings();
-		}
-	});
+    import {
+        NotificationContainer
+    } from "$lib/interactions/notifications";
+    import {
+        SettingsOverlay
+    } from "$lib/settings";
 </script>
 
 <svelte:head>
@@ -29,6 +19,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </svelte:head>
 
-<Notifications />
-<Loading />
+<NotificationContainer />
+<LoadingOverlay />
+<SettingsOverlay />
 <slot />

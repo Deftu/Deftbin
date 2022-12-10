@@ -1,6 +1,6 @@
 <script lang="ts">
     import "./hljs.css";
-    import * as settings from "$lib/settings/settings";
+    import * as settings from "$lib/settings";
 
     import { onMount } from "svelte";
     import * as utils from "$lib/utils";
@@ -29,17 +29,6 @@
             // @ts-ignore
             hljs.highlightAll();
         }
-    }
-
-    function getLineHeight(element: HTMLElement) {
-        const copy = element.cloneNode() as HTMLElement;
-        copy.style.visibility = "hidden";
-        copy.style.position = "absolute";
-        copy.textContent = "a";
-        element.parentNode?.append(copy);
-        const lineHeight = copy.offsetHeight;
-        element.parentNode?.removeChild(copy);
-        return lineHeight;
     }
 
     onMount(() => {
@@ -77,7 +66,7 @@
                     line.textContent = `${content}\n`;
                     codeClone?.append(line);
                     const lineHeight = line.offsetHeight;
-                    const singleLineHeight = getLineHeight(line);
+                    const singleLineHeight = utils.getLineHeight(line);
 
                     const lineNum = document.createElement("span");
                     lineNum.textContent = (i + 1).toString();
