@@ -34,7 +34,7 @@ passport.use(new GitHubStrategy({
         const existingUser = await User.findOneAndUpdate(
             {
                 $or: [{
-                    "connections.github.id": githubId
+                    "metadata.connections.github.id": githubId
                 }, {
                     email: profile.emails?.[0].value
                 }]
@@ -42,9 +42,9 @@ passport.use(new GitHubStrategy({
             {
                 $set: {
                     email: profile.emails?.[0].value,
-                    avatar: profile.photos?.[0].value,
-                    username: profile.username,
-                    "connections.github": {
+                    "metadata.avatar": profile.photos?.[0].value,
+                    "metadata.username": profile.username,
+                    "metadata.connections.github": {
                         id: githubId,
                         username: profile.username,
                     }
@@ -60,13 +60,15 @@ passport.use(new GitHubStrategy({
         const userId = id.generateId();
         const newUser = await User.create({
             id: userId,
-            username: profile.username,
-            avatar: profile.photos?.[0].value,
             email: profile.emails?.[0].value,
-            connections: {
-                github: {
-                    id: githubId,
-                    username: profile.username
+            metadata: {
+                username: profile.username,
+                avatar: profile.photos?.[0].value,
+                connections: {
+                    github: {
+                        id: githubId,
+                        username: profile.username
+                    }
                 }
             }
         });

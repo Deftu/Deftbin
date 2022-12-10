@@ -41,10 +41,10 @@ passport.use(new DiscordStrategy({
         const existingUser = await User.findOneAndUpdate(
             {
                 $or: [{
-                    "connections.discord.id": profile.id
+                    "metadata.connections.discord.id": profile.id
                 },
                 {
-                    "connections.github.id": github?.id
+                    "metadata.connections.github.id": github?.id
                 }, {
                     email: profile.email
                 }]
@@ -52,18 +52,13 @@ passport.use(new DiscordStrategy({
             {
                 $set: {
                     email: profile.email,
-                    avatar: makeAvatarUrl(profile.id, profile.avatar),
-                    connections: {
-                        discord: {
-                            id: profile.id,
-                            username: profile.username,
-                            discriminator: profile.discriminator
-                        },
-                        github: {
-                            id: github?.id,
-                            username: github?.name
-                        }
-                    }
+                    "metadata.username": profile.username,
+                    "metadata.avatar": makeAvatarUrl(profile.id, profile.avatar),
+                    "metadata.connections.discord.id": profile.id,
+                    "metadata.connections.discord.username": profile.username,
+                    "metadata.connections.discord.discriminator": profile.discriminator,
+                    "metadata.connections.github.id": github?.id,
+                    "metadata.connections.github.username": github?.name
                 }
             },
             {
@@ -77,17 +72,19 @@ passport.use(new DiscordStrategy({
             // generate an ID for the user
             id: userId,
             email: profile.email,
-            username: profile.username,
-            avatar: makeAvatarUrl(profile.id, profile.avatar),
-            connections: {
-                discord: {
-                    id: profile.id,
-                    username: profile.username,
-                    discriminator: profile.discriminator
-                },
-                github: {
-                    id: github?.id,
-                    username: github?.name
+            metadata: {
+                username: profile.username,
+                avatar: makeAvatarUrl(profile.id, profile.avatar),
+                connections: {
+                    discord: {
+                        id: profile.id,
+                        username: profile.username,
+                        discriminator: profile.discriminator
+                    },
+                    github: {
+                        id: github?.id,
+                        username: github?.name
+                    }
                 }
             }
         });
